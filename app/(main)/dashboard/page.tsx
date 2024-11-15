@@ -20,20 +20,20 @@ export default function Home() {
 
   return (
     <>
-    {connected ? (
-      <div className="w-full h-screen flex-col flex items-center gap-4">
-      <div className="md:hidden w-full h-50">
-        <MobileRecordButton />
-      </div>
-      <div className="hidden md:block w-full h-50">
-        <DesktopRecordButton />
-      </div>
-    </div>
-    ) : (
-      <div className="flex text-xl font-semibold w-full justify-center items-center">
-        <p>Please connect your wallet to use our features.</p>
-      </div>
-    )}
-  </>
-    );
+      {connected ? (
+        <div className="w-full h-screen flex-col flex items-center gap-4">
+          <div className="md:hidden w-full h-50">
+            <MobileRecordButton />
+          </div>
+          <div className="hidden w-full h-50 md:flex justify-center items-center">
+            <DesktopRecordButton />
+          </div>
+        </div>
+      ) : (
+        <div className="flex text-xl font-semibold w-full justify-center items-center">
+          <p>Please connect your wallet to use our features.</p>
+        </div>
+      )}
+    </>
+  );
 }

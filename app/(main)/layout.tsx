@@ -5,9 +5,8 @@ import NavBar from "@/components/Navbar";
 import Header from "@/components/Header";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import Provider from '@/components/Provider';
-
-
+import Provider from "@/components/Provider";
+import DesktopNavbar from "@/components/DesktopNavbar";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -36,20 +35,24 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <DynamicContextProvider
-        settings={{
-          environmentId: "729cedfa-59bc-4da0-b3fa-d73f460267c8",
-          walletConnectors: [EthereumWalletConnectors],
-        }}>
+          settings={{
+            environmentId: "729cedfa-59bc-4da0-b3fa-d73f460267c8",
+            walletConnectors: [EthereumWalletConnectors],
+          }}
+        >
           <Provider>
-          <div className="h-screen w-full flex-col">
-            <div className="h-1/3">
-              <Header />
+            <div className="h-screen w-full flex-col">
+              <div className="h-1/3">
+                <div className="max-md:hidden">
+                  <DesktopNavbar />
+                </div>
+                <Header />
+              </div>
+              <div className="my-12">{children}</div>
+              <div className="md:hidden">
+                <NavBar />
+              </div>
             </div>
-            <div className="my-12">
-              {children}
-            </div>
-            <NavBar />
-          </div>
           </Provider>
         </DynamicContextProvider>
       </body>
