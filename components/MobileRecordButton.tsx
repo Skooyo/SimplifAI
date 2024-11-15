@@ -19,8 +19,8 @@ const MobileRecordButton = () => {
   };
 
   return (
-    <div className={`w-full md:w-1/3 ${recording || transcript.length > 0 ? "h-1/3" : "h-fit"} items-center justify-center flex flex-col p-4 gap-4`}>
-      <div className="w-1/2 h-full flex items-center justify-center">
+    <div className={`w-full h-fit items-center justify-center flex flex-col p-4 gap-8`}>
+      <div className="w-[80%] h-full flex items-center justify-center">
         <Input
           type="text"
           placeholder="Enter your prompt here"
