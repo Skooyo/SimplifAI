@@ -1,47 +1,31 @@
 "use client";
 
-import DesktopRecordButton from "@/components/DesktopRecordButton";
-import MobileRecordButton from "@/components/MobileRecordButton";
-import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useState, useEffect } from "react";
-import NotificationList from "@/components/NotificationList";
+import ToggleNotification from "@/components/ToggleNotification";
+import { useWalletClient } from "wagmi";
 
 export default function Home() {
-  const [connected, setConnected] = useState(false);
   const { primaryWallet } = useDynamicContext();
-  const isLoggedIn = useIsLoggedIn();
-  const [connectedWallet, setConnectedWallet] = useState<any>();
-  const [showNotification, setShowNotification] = useState(false);
-
-  // Modal states
-  const [isOpen, setIsOpen] = useState(false);
+  const [walletAddress, setWalletAddress] = useState("");
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    if (primaryWallet) {
+    if (primaryWallet && !walletAddress) {
       setConnected(true);
-      setConnectedWallet(primaryWallet);
+      setWalletAddress(primaryWallet.address);
     }
   }, [primaryWallet]);
 
-
-
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  }
-
   return (
     <>
-      {isLoggedIn ? (
-        <div className="w-full h-screen flex-col flex items-center gap-4">
-          <div className="w-full h-50">
-            <NotificationList />
+      <div className="w-full h-screen flex-col flex items-center gap-4">
+        {connected && (
+          <div className="w-full h-fit p-4 flex items-center justify-center">
+            <ToggleNotification connectedWallet={walletAddress} />
           </div>
-        </div>
-      ) : (
-        <div className="flex text-xl font-semibold w-full justify-center items-center">
-          <p>Please connect your wallet to use our features.</p>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

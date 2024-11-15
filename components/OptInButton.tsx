@@ -51,10 +51,10 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptInResponse = await user.notification.subscribe(
-      "eip155:11155111:0xFD008e19B64E4786e6F4D0C16f161f67554B0Bd7"
+      `eip155:11155111:${process.env.SIMPLIFAI_CHANNEL_ADDRESS}`
     );
     console.log("OptInResponse", OptInResponse);
-    if ('status' in OptInResponse &&OptInResponse.status === 204) {
+    if ('status' in OptInResponse && OptInResponse.status === 204) {
       setIsSubscribed(true);
     }
   }
@@ -64,7 +64,7 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptOutResponse = await user.notification.unsubscribe(
-      "eip155:11155111:0xFD008e19B64E4786e6F4D0C16f161f67554B0Bd7"
+      `eip155:11155111:${process.env.SIMPLIFAI_CHANNEL_ADDRESS}`
     );
     console.log("OptOutResponse", OptOutResponse);
     if ('status' in OptOutResponse && OptOutResponse.status === 204) {

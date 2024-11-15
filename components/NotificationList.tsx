@@ -17,7 +17,7 @@ const NotificationList = () => {
         setLoading(true);
         if (signer) {
             const response = await getLatestNotifications(signer);
-            setNotifications(response);
+            setNotifications(response || []);
         } else {
             console.log("No signer found");
         }
