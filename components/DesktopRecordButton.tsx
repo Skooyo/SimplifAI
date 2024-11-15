@@ -6,7 +6,13 @@ import { RiSendPlaneFill } from "react-icons/ri";
 import { Input } from "@/components/ui/input";
 import parseTranscript from "@/utils/parseTranscript";
 
-const DesktopRecordButton = () => {
+interface DesktopRecordButtonProps {
+  setParsedResponse: (response: any) => void;
+}
+
+const DesktopRecordButton = ({
+  setParsedResponse,
+}: DesktopRecordButtonProps) => {
   const {
     recording,
     startRecording,
@@ -32,7 +38,7 @@ const DesktopRecordButton = () => {
       console.log("Analyzing transcript...");
       const response = await parseTranscript(prompt);
       console.log("Response:", response);
-      // do whatever you want with the response
+      setParsedResponse(response);
     };
     if (prompt && prompt.length > 0) {
       analyseTranscript();
@@ -43,7 +49,7 @@ const DesktopRecordButton = () => {
 
   return (
     <div
-      className={`mt-20 w-full md:w-1/4 h-full items-center flex flex-col p-4 gap-8 text-white`}
+      className={`mt-20 w-full h-full items-center flex flex-col p-4 gap-8 text-white`}
     >
       <div className="w-full card-gradient rounded-xl h-1/5 flex items-center justify-center gap-4 overflow-hidden">
         <div className="w-full h-full p-4">
