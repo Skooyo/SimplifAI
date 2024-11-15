@@ -9,7 +9,6 @@ import PortfolioCard from "@/components/PortfolioCard";
 
 const CHAIN_ID = 1;
 const WALLET_ADDRESS = "0x67BDB62C0FF92187490DD34ed1BCEEdD3e47d517";
-// const WALLET_ADDRESS = "";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -45,7 +44,6 @@ export default function Home() {
     // const tokenDetails = await getTokenDetails(account.address, chainId);
     console.log(tokenDetails);
     if (!tokenDetails) {
-      setLoading(false);
       return;
     }
     const tokenResult = tokenDetails.result;
@@ -83,7 +81,6 @@ export default function Home() {
     console.log("Process Completed");
     console.log(tokenResult);
     setPortfolio(tokenResult);
-    setLoading(false);
   };
 
   const calcBalance = () => {
@@ -105,19 +102,25 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchPortfolio();
+    if(account.address){
+      fetchPortfolio();
+      console.log("fetched portfolio of", account.address);
+    }
   }, [account.address]);
 
   useEffect(() => {
-    calcBalance();
-    setFinished(true);
+    if(account.address) {
+      calcBalance();
+      setLoading(false);
+      setFinished(true);
+    }
   }, [portfolio, loading]);
 
   return (
     <>
       <div className="w-full h-screen flex-col flex items-center gap-4 pb-16">
         {/* Spinner for when loading */}
-        {(!finished || loading) && (
+        {(!finished || (loading && portfolio.length == 0)) && (
           <div className="w-full h-fit flex flex-col gap-4 items-center justify-center">
             <CgSpinner className="animate-spin h-10 w-10" />
             <p>Loading...</p>
