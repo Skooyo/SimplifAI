@@ -1,8 +1,8 @@
 "use client";
 
 import useDesktopSTT from "@/utils/useDesktopSTT";
-import { useEffect } from "react";
 import { FaMicrophone } from "react-icons/fa";
+import { RiSendPlaneFill } from "react-icons/ri";
 import { Input } from "@/components/ui/input";
 import parseTranscript from "@/utils/parseTranscript";
 
@@ -43,38 +43,38 @@ const DesktopRecordButton = () => {
 
   return (
     <div
-      className={`w-full md:w-1/3 h-fit items-center justify-center flex flex-col p-4 gap-4 text-white`}
+      className={`mt-20 w-full md:w-1/4 h-full items-center flex flex-col p-4 gap-8 text-white`}
     >
-      <div className="w-1/2 h-full flex flex-col items-center justify-center gap-4">
-        <Input
-          type="text"
-          placeholder="Enter your prompt here"
-          value={transcript}
-          className="bg-gray-500 rounded-xl"
-          onChange={(e) => setTranscript(e.target.value)}
-        />
+      <div className="w-full card-gradient rounded-xl h-1/5 flex items-center justify-center gap-4 overflow-hidden">
+        <div className="w-full h-full p-4">
+          <textarea
+            placeholder="Enter prompt or press record and speak into the microphone"
+            value={transcript}
+            className="bg-transparent rounded-xl w-full h-full resize-none outline-none overflow-hidden placeholder-[#6e6e6e] text-[#a3a3a3]"
+            onChange={(e) => setTranscript(e.target.value)}
+            maxLength={300} // Optional: limit the number of characters
+          />
+        </div>
         <button
           onClick={handleSubmit}
-          className="bg-green-500 hover:bg-green-700 py-2 px-4 rounded-full text-white font-bold"
+          className="border border-s4/25 bg-s1/5 hover:border-s4 transition-all duration-300 p-3 mr-4 rounded-full text-white font-bold"
         >
-          Submit
+          <RiSendPlaneFill size={24} />
         </button>
       </div>
-      {/* <p className="h-1/2 flex items-center overflow-y-auto mb-8 text-white">{transcript}</p> */}
       <button
         onClick={handleClick}
-        className={`w-1/4 h-1/4 rounded-full aspect-square size-10 transition-all duration-500 ${
+        className={`w-1/3 h-fit rounded-full aspect-square size-10 transition-all duration-500 ${
           recording ? "" : "border-2 border-s4/25 bg-s1/5 hover:border-s4"
         } text-white font-bold flex gap-2 justify-center items-center`}
       >
         {recording ? (
-          <div className="circle pulse bg-s4/40 rounded-full aspect-square size-10 w-full h-full flex justify-center items-center">
-            <FaMicrophone size={36} />
+          <div className="circle pulse from-[rgba(199,242,132,1))] to-[rgba(0,190,240,1)] bg-v2-text-gradient rounded-full aspect-square size-10 w-full h-full flex justify-center items-center transition-all duration-500">
+            <FaMicrophone size={24} />
           </div>
         ) : (
-          <FaMicrophone size={36} />
+          <FaMicrophone size={24} />
         )}
-        {/* <h1>{recording ? "Desktop Recording" : "Desktop Record"}</h1> */}
       </button>
     </div>
   );

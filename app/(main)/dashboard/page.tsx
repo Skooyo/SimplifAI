@@ -21,11 +21,11 @@ export default function Home() {
   return (
     <>
       {connected ? (
-        <div className="w-full h-screen flex-col flex items-center gap-4">
+        <div className="w-full h-[60vh] flex-col flex items-center gap-4">
           <div className="md:hidden w-full h-50">
             <MobileRecordButton />
           </div>
-          <div className="hidden w-full h-50 md:flex justify-center items-center">
+          <div className="hidden w-full h-full md:flex justify-center items-center">
             <DesktopRecordButton />
           </div>
         </div>
