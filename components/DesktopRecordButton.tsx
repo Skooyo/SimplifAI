@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input";
 import parseTranscript from "@/utils/parseTranscript";
 
 
-const DesktopRecordButton = () => {
+interface DesktopRecordButtonProps {
+  setParsedResponse: (response: any) => void;
+}
+
+const DesktopRecordButton = ({ setParsedResponse }: DesktopRecordButtonProps) => {
   const { recording, startRecording, stopRecording, transcript, setTranscript } = useDesktopSTT();
 
   const handleClick = () => {
@@ -27,7 +31,7 @@ const DesktopRecordButton = () => {
       console.log("Analyzing transcript...");
       const response = await parseTranscript(prompt);
       console.log("Response:", response);
-      // do whatever you want with the response
+      setParsedResponse(response);
     }
     if (prompt && prompt.length > 0) {
       analyseTranscript();

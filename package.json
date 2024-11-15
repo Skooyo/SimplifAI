@@ -13,7 +13,6 @@
     "@1inch/cross-chain-sdk": "^0.1.9",
     "@dynamic-labs/ethereum": "^3.6.1",
     "@dynamic-labs/sdk-react-core": "^3.6.1",
-    "@dynamic-labs/solana": "^3.6.0",
     "@dynamic-labs/wagmi-connector": "^3.6.1",
     "@hookform/resolvers": "^3.9.1",
     "@pushprotocol/restapi": "^1.7.29",
