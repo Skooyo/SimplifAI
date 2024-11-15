@@ -58,13 +58,21 @@ const ToggleNotification = ({
   }
 
   useEffect(() => { // runs during rendering
+    if(connectedWallet) {
     handleCheckSubscription();
+    }
   }, []);
 
   return (
     <>
       {loading && <p>Checking Subscription Status...</p>}
-      {!loading && <button onClick={handleNotificationToggle}>{isSubscribed ? "Unsubscribe" : "Subscribe"}</button>}
+      {!loading && <button
+      className="px-3 py-2 flex items-center justify-center bg-gray-600 rounded-xl" 
+      onClick={handleNotificationToggle}
+      >
+        {isSubscribed ? "Disable Notifications" : "Enable Notifications"}
+        </button>
+        }
     </>
   );
 };

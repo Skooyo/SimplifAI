@@ -7,12 +7,12 @@ const getLatestNotifications = async (signer: any) => {
     env: CONSTANTS.ENV.STAGING,
   });
   
-  if(!process.env.SIMPLIFAI_CHANNEL_ADDRESS) {
+  if(!process.env.NEXT_PUBLIC_SIMPLIFAI_CHANNEL_ADDRESS) {
     console.log("No channel address found");
     return;
   }
 
-  const chat = await userReadOnly.chat.history(process.env.SIMPLIFAI_CHANNEL_ADDRESS, {
+  const chat = await userReadOnly.chat.history(process.env.NEXT_PUBLIC_SIMPLIFAI_CHANNEL_ADDRESS, {
     limit: 5
   });
 
