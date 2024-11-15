@@ -43,30 +43,36 @@ export default function Home() {
 
   const handleOpenModal = () => {
     setIsOpen(true);
-  }
+  };
 
   return (
     <>
       {isLoggedIn ? (
         <div className="w-full h-screen flex-col flex items-center gap-4">
-          <div className="md:hidden w-full h-50">
-            <MobileRecordButton />
-          </div>
-          <div className="hidden md:block w-full h-50">
-            <DesktopRecordButton setParsedResponse={setParsedResponse} />
-          </div>
-          <div>
-            {
-              Object.keys(processedArguments).length > 0 && (
+          <div className="md:w-1/4">
+            <div className="md:hidden w-full h-50">
+              <MobileRecordButton />
+            </div>
+            <div className="hidden w-full h-full md:flex justify-center items-center">
+              <DesktopRecordButton setParsedResponse={setParsedResponse} />
+            </div>
+            <div>
+              {Object.keys(processedArguments).length > 0 && (
                 <p>{JSON.stringify(processedArguments, null, 2)}</p>
-              )
-            }
-          </div>
-          <div className="w-full h-50">
-            <NotificationList />
-          </div>
+              )}
+            </div>
+            <div className="w-full h-50">
+              <NotificationList />
+            </div>
 
-          <ActionConfirmationPopUp response={parsedResponse} isOpen={isOpen} setIsOpen={setIsOpen} setAcceptAction={setAcceptAction} setProcessedArguments={setProcessedArguments} />
+            <ActionConfirmationPopUp
+              response={parsedResponse}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              setAcceptAction={setAcceptAction}
+              setProcessedArguments={setProcessedArguments}
+            />
+          </div>
         </div>
       ) : (
         <div className="flex text-xl font-semibold w-full justify-center items-center">
