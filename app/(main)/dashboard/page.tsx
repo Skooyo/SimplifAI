@@ -1,8 +1,9 @@
 "use client";
 
+import DesktopRecordButton from "@/components/DesktopRecordButton";
+import MobileRecordButton from "@/components/MobileRecordButton";
 import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useState, useEffect } from "react";
-import { set } from "react-hook-form";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -21,8 +22,13 @@ export default function Home() {
     <>
     {connected ? (
       <div className="w-full h-screen flex-col flex items-center gap-4">
-        Wallet Connected!
+      <div className="md:hidden w-full h-50">
+        <MobileRecordButton />
       </div>
+      <div className="hidden md:block w-full h-50">
+        <DesktopRecordButton />
+      </div>
+    </div>
     ) : (
       <div className="flex text-xl font-semibold w-full justify-center items-center">
         <p>Please connect your wallet to use our features.</p>
