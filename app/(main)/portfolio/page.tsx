@@ -34,6 +34,7 @@ export default function Home() {
   const [userBal, setUserBal] = useState<number>(0);
   const [userProfit, setuserProfit] = useState<number>(0);
   const [userROI, setUserROI] = useState<number>(0);
+  const [portfolioFetched, setPortfolioFetched] = useState<boolean>(false);
   const account = useAccount({config});
   const chainId = useChainId();
 
@@ -104,12 +105,13 @@ export default function Home() {
   useEffect(() => {
     if(account.address){
       fetchPortfolio();
+      setPortfolioFetched(true);
       console.log("fetched portfolio of", account.address);
     }
   }, [account.address]);
 
   useEffect(() => {
-    if(account.address) {
+    if(account.address && portfolioFetched) {
       calcBalance();
       setLoading(false);
       setFinished(true);
