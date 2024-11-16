@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useWalletClient } from "wagmi";
 import NotificationCard from "./NotificationCard";
 
-
 const NotificationWidget = ({connectedWallet} : {connectedWallet: string}) => {
   const {data:signer} = useWalletClient();
   const [loading, setLoading] = useState(true);
