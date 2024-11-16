@@ -6,7 +6,7 @@ import { Element } from "react-scroll";
 
 const HowToUse = () => {
   return (
-    <section className="z-[2] mt-24 mb-60">
+    <section className="z-[2] md:mt-24 md:mb-60">
       <Element name="How To Use">
         <div className="w-screen flex justify-center items-center">
           <div className="md:mt-0 mt-32 relative w-full  pb-40 pt-28 max-xl:max-w-4xl max-lg:border-none max-md:pb-32 max-md:pt-16 flex justify-center items-center flex-col">
@@ -36,9 +36,9 @@ const HowToUse = () => {
               />
             </div>
 
-            <div className="mt-60 w-4/5 flex flex-col gap-[500px] justify-center items-center">
+            <div className="max-md:mt-16 w-4/5 flex flex-col md:gap-20 justify-center items-center">
               <div className="flex items-center justify-between w-full">
-                <div className="flex flex-col w-2/5 gap-4">
+                <div className="flex flex-col w-full md:w-2/5 gap-4 flex-shrink-0">
                   <h1 className="h4 text-p4 max-md:h5">
                     Open the App & Connect Your Wallet
                   </h1>
@@ -47,11 +47,23 @@ const HowToUse = () => {
                     setups required.
                   </p>
                 </div>
-                <Image src="/phala.png" width={256} height={256} alt="phone" />
+                <Image
+                  src="/mobile-login.png"
+                  width={1920}
+                  height={1920}
+                  alt="phone"
+                  className="hidden md:block -ml-[300px]"
+                />
               </div>
-              <div className="flex items-center justify-between w-full">
-                <Image src="/phala.png" width={256} height={256} alt="phone" />
-                <div className="flex flex-col w-2/5 gap-4">
+              <div className="flex items-center justify-between w-full mt-20 md:-mt-[200px]">
+                <Image
+                  src="/mobile-voice.png"
+                  width={1920}
+                  height={1920}
+                  alt="phone"
+                  className="hidden md:block -ml-[500px]"
+                />
+                <div className="flex flex-col w-full md:w-2/5 gap-4 md:-ml-[100px] flex-shrink-0">
                   <h1 className="h4 text-p4 max-md:h5">Voice Command</h1>
                   <p className="body-3 text-gray-400">
                     Speak your command to set up your actions, and SimplifAI
@@ -59,15 +71,21 @@ const HowToUse = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between w-full">
-                <div className="flex flex-col w-2/5 gap-4">
+              <div className="flex items-center justify-between w-full mt-20">
+                <div className="flex flex-col w-full md:w-2/5 gap-4">
                   <h1 className="h4 text-p4 max-md:h5">Confirm and Go</h1>
                   <p className="body-3 text-gray-400">
                     You stay in control. Review the transaction, approve, and
                     let SimplifAI complete it in seconds.
                   </p>
                 </div>
-                <Image src="/phala.png" width={256} height={256} alt="phone" />
+                <Image
+                  src="/phala.png"
+                  width={256}
+                  height={256}
+                  alt="phone"
+                  className="hidden"
+                />
               </div>
             </div>
           </div>
