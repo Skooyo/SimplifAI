@@ -2,7 +2,6 @@ import checkSubscription from "@/utils/checkSubscription";
 import { useEffect, useState } from "react";
 import { useWalletClient } from "wagmi";
 import { PushAPI, CONSTANTS } from '@pushprotocol/restapi';
-// import sendMessage from "@/utils/sendMes";
 
 const ToggleNotification = ({
   connectedWallet,
@@ -51,17 +50,12 @@ const ToggleNotification = ({
   }
 
   const handleNotificationToggle = async () => {
-    // await sendMessageToUser();
     if (isSubscribed) {
       await handleOptOut();
     } else {
       await handleOptIn();
     } 
   }
-
-  // const sendMessageToUser = async () => {
-  //   sendMessage({receiverAdr: connectedWallet, message: "Sending message through a callable function"});
-  // }
 
   useEffect(() => { // runs during rendering
     if(connectedWallet) {

@@ -32,17 +32,17 @@ const Header = () => {
             width={2000}
             height={2000}
             style={{ objectFit: "cover" }}
-            className="h-full"
+            className="h-full w-full"
           />
         </div>{" "}
         {/* BG Image Placeholder */}
-        <div className="w-1/3 md:w-1/12 bg-blue-500 -mt-24 rounded-full aspect-square relative overflow-hidden p-16">
+        <div className="w-1/4 md:w-1/12 bg-blue-500 -mt-24 rounded-full aspect-square relative overflow-hidden p-20">
           <Image
             src={`https://api.cloudnouns.com/v1/pfp?text=${primaryWallet?.address}`}
             fill
             style={{ objectFit: "cover" }}
             alt=""
-            className="absolute rounded-full aspect-square"
+            className="rounded-full aspect-square"
           />
         </div>
         {/* Profile Picture Placeholder */}
