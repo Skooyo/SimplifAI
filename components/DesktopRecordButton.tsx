@@ -8,10 +8,12 @@ import parseTranscript from "@/utils/parseTranscript";
 
 interface DesktopRecordButtonProps {
   setParsedResponse: (response: any) => void;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 const DesktopRecordButton = ({
   setParsedResponse,
+  setIsOpen,
 }: DesktopRecordButtonProps) => {
   const {
     recording,
@@ -34,6 +36,7 @@ const DesktopRecordButton = ({
     setTranscript("");
 
     const analyseTranscript = async () => {
+      setIsOpen(true);
       console.log("Finished recording:", prompt);
       console.log("Analyzing transcript...");
       const response = await parseTranscript(prompt);

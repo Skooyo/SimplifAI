@@ -3,6 +3,10 @@ import Modal from 'react-modal';
 import { Styles } from 'react-modal';
 import { useState } from "react";
 import processArguments from "@/utils/processArguments";
+import { FiAlertTriangle } from "react-icons/fi";
+import { SlQuestion } from "react-icons/sl";
+import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import SyntaxHighlighter from 'react-syntax-highlighter';
 
 type ActionConfirmationPopUpProps = {
   response: any,
@@ -10,9 +14,10 @@ type ActionConfirmationPopUpProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAcceptAction: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessedArguments: React.Dispatch<React.SetStateAction<any>>;
+  setParsedResponse?: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments}: ActionConfirmationPopUpProps) => {
+const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, setParsedResponse}: ActionConfirmationPopUpProps) => {
   const hasToolCall = 'tool_calls' in response;
 
   const customStyles = {
@@ -24,7 +29,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
       left: '50%',
       right: 'auto',
       width: "auto",
-      maxWidth: '1200px',
+      maxWidth: '90%',
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
@@ -37,6 +42,8 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
   };
 
   const handleClosePopUp = () => {
+    setParsedResponse({});
+    setProcessedArguments({});
     setIsOpen(false);
   }
 
@@ -57,42 +64,69 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
         style={customStyles as Styles}
       >
         {
-          hasToolCall ? (
-            <div className="flex flex-col h-full w-full transform transition hover:shadow-lg">
-              <div className="flex justify-center items-center w-full h-14 bg-blue-500 mx-5">
-                <h1 className="text-3xl">Action Confirmation</h1>
-              </div>
-              <div className="flex w-full h-full bg-blue-800 p-3">
-                  <h1 className="">Action:</h1>
-                  <h1 className="">{JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}</h1>
-              </div>
-              <div className="flex w-full justify-around items-center">
-                <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
-                  <h1>Reject</h1>
+          Object.keys(response).length > 0 ? 
+            hasToolCall ? (
+              <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
+                <div className="flex flex-col justify-center items-center w-full  p-3 text-wrap">
+                  <SlQuestion size={120} />
+                  <h1 className="text-3xl font-bold">Action</h1>
+                    <h1 className="text-3xl font-bold">Confirmation</h1>
                 </div>
-                <div className="flex justify-center items-center w-20 h-8 bg-green-600 rounded-full" onClick={handleAcceptAction}>
-                  <h1>Accept</h1>
+                <div className="flex flex-col w-full h-full p-3">
+                    <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
+                    <div className="flex w-full h-full overflow-auto border-[#94a3b8] border mt-3 mb-6">
+                      <SyntaxHighlighter 
+                        language="json" 
+                        style={darcula} 
+                        customStyle={{
+                        width: "100%", 
+                        maxHeight: "100%", 
+                        overflow: "auto", 
+                        whiteSpace: "pre-wrap",
+                        fontSize: "1em"
+                        }}
+                        >
+                        {JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}
+                      </SyntaxHighlighter>
+                    </div>
+                </div>
+                <div className="flex w-full justify-around items-center">
+                  <div className="flex justify-center items-center w-28 h-10 bg-red-500 rounded-full" onClick={handleClosePopUp}>
+                    <h1 className="text-2xl">Reject</h1>
+                  </div>
+                  <div className="flex justify-center items-center w-28 h-10 bg-green-500 rounded-full" onClick={handleAcceptAction}>
+                    <h1 className="text-2xl">Accept</h1>
+                  </div>
+                </div>
+      
+              </div>
+            ) : (
+              <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
+                <div className="flex flex-col justify-center items-center w-full  p-3 text-wrap">
+                  <FiAlertTriangle size={120} color={"#f87171"} />
+                  <h1 className="text-3xl text-red-400 font-extrabold">Error</h1>
+                  <h1 className="text-2xl ">Function Call not triggered</h1>
+                </div>
+                <div className="flex w-full h-full p-3">
+                    <h1 className="text-center text-xl">{response.content}</h1>
+                </div>
+                <div className="flex w-full justify-around items-center p-3">
+                  <div className="flex justify-center items-center w-28 h-10 bg-red-500 rounded-full" onClick={handleClosePopUp}>
+                    <h1 className="text-2xl">Close</h1>
+                  </div>
                 </div>
               </div>
-    
-            </div>
-          ) : (
-            <div className="flex flex-col h-full w-full transform transition hover:shadow-lg">
-              <div className="flex justify-center items-center w-full h-14 bg-blue-500 mx-5 text-wrap">
-                <h1 className="text-xl ">Error: Function Call not triggered</h1>
-              </div>
-              <div className="flex w-full h-full bg-blue-800 p-3">
-                  <h1 className="">Issue:</h1>
-                  <h1 className="">{response.content}</h1>
-              </div>
-              <div className="flex w-full justify-around items-center p-3">
-                <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
-                  <h1>Close</h1>
+            ) : (
+              <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
+                <div className="flex flex-col justify-center items-center w-full  p-3 text-wrap">
+                  <FiAlertTriangle size={120} color={"#f87171"} />
+                  <h1 className="text-3xl font-extrabold">Loading...</h1>
+                </div>
+                <div className="flex w-full h-full p-3">
+                    <h1 className="text-center text-xl">Please wait a moment as we analyse your prompt</h1>
                 </div>
               </div>
-
-            </div>
-          )
+            )
         }
       </Modal>
     </div>

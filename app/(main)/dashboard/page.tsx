@@ -19,6 +19,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [acceptAction, setAcceptAction] = useState(false);
   const [processedArguments, setProcessedArguments] = useState<any>({});
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useEffect(() => {
     if (primaryWallet) {
@@ -27,11 +28,11 @@ export default function Home() {
     }
   }, [primaryWallet]);
 
-  useEffect(() => {
-    if (Object.keys(parsedResponse).length > 0) {
-      setIsOpen(true);
-    }
-  }, [parsedResponse]);
+  // useEffect(() => {
+  //   if (Object.keys(parsedResponse).length > 0) {
+  //     setIsOpen(true);
+  //   }
+  // }, [parsedResponse, setIsOpen]);
 
   useEffect(() => {
     if (acceptAction) {
@@ -40,10 +41,6 @@ export default function Home() {
       // Mario you can take it from here
     }
   }, [acceptAction]);
-
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  };
 
   return (
     <>
@@ -54,7 +51,7 @@ export default function Home() {
               <MobileRecordButton />
             </div>
             <div className="hidden w-full h-full md:flex justify-center items-center">
-              <DesktopRecordButton setParsedResponse={setParsedResponse} />
+              <DesktopRecordButton setParsedResponse={setParsedResponse} setIsOpen={setIsOpen} />
             </div>
             <div>
               {Object.keys(processedArguments).length > 0 && (
@@ -71,6 +68,7 @@ export default function Home() {
               setIsOpen={setIsOpen}
               setAcceptAction={setAcceptAction}
               setProcessedArguments={setProcessedArguments}
+              setParsedResponse={setParsedResponse}
             />
           </div>
         </div>
