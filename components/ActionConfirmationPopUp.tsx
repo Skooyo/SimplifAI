@@ -7,7 +7,14 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
 import TransferCard from '@/components/confirmation-components/Transfer';
 import Button from '@/components/landing-components/Button';
-import RedButton from './landing-components/RedButton';
+import RedButton from '@/components/landing-components/RedButton';
+import SwapCard from "@/components/confirmation-components/Swap";
+
+const swapDummyData = {
+  tokenSwapFrom: {logoURI: "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png", symbol: "WETH"},
+  tokenSwapTo: {logoURI: "https://cryptologos.cc/logos/usd-coin-usdc-logo.svg?v=035", symbol: "USDC"},
+  tokenSwapFromAmount: 10
+}
 
 
 type ActionConfirmationPopUpProps = {
@@ -29,6 +36,7 @@ const ActionConfirmationPopUp = ({
 }: ActionConfirmationPopUpProps) => {
   const hasToolCall = "tool_calls" in response;
   const [isTransfer, setIsTransfer] = useState<boolean>(false);
+  const [isSwap, setIsSwap] = useState<boolean>(false);
   const [type, setType] = useState<string>("");
 
   const [txCard, setTxCard] = useState<any>(null);
@@ -121,9 +129,13 @@ const ActionConfirmationPopUp = ({
                   transferToken={txData.transferToken}
                   transferAmount={txData.transferAmount}
                 />
-              ) : (
-                ""
-              )}
+              ) : isSwap ? (
+                <SwapCard
+                  tokenSwapFrom={swapDummyData.tokenSwapFrom}
+                  tokenSwapTo={swapDummyData.tokenSwapTo}
+                  tokenSwapFromAmount={swapDummyData.tokenSwapFromAmount}
+                />
+              ) : ("Unknown Type")}
             </div>
             <div className="flex w-full justify-between items-center mb-10 pl-6 pr-6">
               <RedButton onClick={handleClosePopUp}>

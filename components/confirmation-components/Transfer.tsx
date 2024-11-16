@@ -15,7 +15,7 @@ const TransferCard = ({
   transferAmount,
 }: TransferCardProps) => {
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full p-6 font-semibold backdrop-blur-sm card-gradient rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#9d9d9d]">
+    <div className="flex flex-col justify-center items-center w-full h-full p-6 mb-1 font-semibold backdrop-blur-sm card-gradient rounded-xl text-[#9d9d9d]">
       <div className="flex flex-col w-full justify-center items-center">
         {/** Logos */}
         <div className="flex w-2/3 justify-around items-center m-2 sm:m-0">
