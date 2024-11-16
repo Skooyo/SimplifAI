@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import getAllNotifications from "@/utils/getAllNofitications";
 
-const RetriveAllNotificationButton = ({
+const RetriveNotificationButton = ({
   connectedWallet,
 }: {
   connectedWallet: string;
@@ -33,4 +33,4 @@ const RetriveAllNotificationButton = ({
   );
 };
 
-export default RetriveAllNotificationButton;
+export default RetriveNotificationButton;

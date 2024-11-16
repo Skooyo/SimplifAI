@@ -5,8 +5,6 @@ import { useState } from "react";
 import processArguments from "@/utils/processArguments";
 import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
-import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import TransferCard from '@/components/confirmation-components/Transfer';
 import Button from '@/components/landing-components/Button';
 import RedButton from './landing-components/RedButton';
