@@ -4,7 +4,6 @@ import DesktopRecordButton from "@/components/DesktopRecordButton";
 import MobileRecordButton from "@/components/MobileRecordButton";
 import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useState, useEffect } from "react";
-import NotificationList from "@/components/NotificationList";
 import ActionConfirmationPopUp from "@/components/ActionConfirmationPopUp";
 
 export default function Home() {
@@ -60,9 +59,6 @@ export default function Home() {
               {Object.keys(processedArguments).length > 0 && (
                 <p>{JSON.stringify(processedArguments, null, 2)}</p>
               )}
-            </div>
-            <div className="w-full h-50">
-              <NotificationList />
             </div>
 
             <ActionConfirmationPopUp

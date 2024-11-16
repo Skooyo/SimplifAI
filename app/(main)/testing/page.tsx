@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import ToggleNotification from "@/components/ToggleNotification";
 import { useWalletClient } from "wagmi";
 import NotificationWidget from "@/components/NotificationWidget";
+import MessageButton from "@/components/MessageButton";
 
 export default function Home() {
   const { primaryWallet } = useDynamicContext();
@@ -25,6 +26,7 @@ export default function Home() {
           <div className="w-full h-fit p-4 flex flex-col gap-8 items-center justify-center">
             <ToggleNotification connectedWallet={walletAddress} />
             <NotificationWidget connectedWallet={walletAddress} />
+            <MessageButton connectedWallet={walletAddress} />
           </div>
         )}
       </div>

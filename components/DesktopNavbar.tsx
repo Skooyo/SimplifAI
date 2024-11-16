@@ -3,10 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import NotificationWidget from "./NotificationWidget";
+import { useWalletClient } from "wagmi";
+import getLatestNotifications from "@/utils/getLatestNotifications";
+import NotificationCard from "./NotificationCard";
 
 const DesktopNavbar = () => {
   const pathname = usePathname();
@@ -21,6 +24,42 @@ const DesktopNavbar = () => {
       setWalletAddress(primaryWallet.address);
     }
   }, [primaryWallet]);
+
+  const { data: signer } = useWalletClient();
+  const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const notificationRef = useRef(null);
+
+  const fetchNotifications = async () => {
+    if (signer) {
+      const response = await getLatestNotifications(signer);
+      setNotifications(response || []);
+    } else {
+      console.log("No signer found");
+    }
+    setLoading(false);
+    setShowNotifications(true);
+  };
+
+  const handleClickOutside = (event: any) => {
+    if (
+      notificationRef.current &&
+      !(notificationRef.current as HTMLElement).contains(event.target)
+    ) {
+      setShowNotifications(false);
+    }
+
+    console.log("clicked outside");
+  };
+
+  useEffect(() => {
+    console.log("added event listener");
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full transition-all duration-500 max-lg:py-4 py-2 bg-black bg-opacity-50 backdrop-blur-[8px] flex justify-between items-center px-20">
@@ -73,26 +112,30 @@ const DesktopNavbar = () => {
           alt="logo"
           className="opacity-0 pointer-events-none"
         />
-        <div className="cursor-pointer">
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger className="trigger-class">
-              <IoIosNotificationsOutline size={30} />
-            </DropdownMenu.Trigger>
-            <DropdownMenu.Content className="content-class">
-              <DropdownMenu.Item className="item-class">
-                <NotificationWidget
-                  connectedWallet={walletAddress}
-                  loadNotifs={true}
-                />
-              </DropdownMenu.Item>
-              {/* <DropdownMenu.Item className="item-class">
-                Item 2
-              </DropdownMenu.Item>
-              <DropdownMenu.Item className="item-class">
-                Item 3
-              </DropdownMenu.Item> */}
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
+        <div className="relative cursor-pointer" ref={notificationRef}>
+          {connected && (
+            // <>
+            // <div onClick={fetchNotifications}>
+            //   <IoIosNotificationsOutline size={30} />
+            // </div>
+            //   {showNotifications && notifications && !loading && (
+            //     <div className="absolute top-12 w-[500px] -right-24">
+            //       {notifications.map((notification, index) => (
+            //         <div key={index} className="w-11/12  mt-2 mb-2 ">
+            //           <NotificationCard notification={notification} />
+            //         </div>
+            //       ))}
+            //     </div>
+            //   )}
+            // </>
+            <div className="">
+              <NotificationWidget
+                connectedWallet={walletAddress}
+                showNotifications={showNotifications}
+                setShowNotifications={setShowNotifications}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
