@@ -49,8 +49,8 @@ export default function Home() {
       {isLoggedIn ? (
         <div className="w-full h-screen flex-col flex items-center gap-4">
           <div className="md:w-1/4">
-            <div className="md:hidden w-full h-50">
-              <MobileRecordButton />
+            <div className="md:hidden w-screen h-50">
+              <MobileRecordButton setParsedResponse={setParsedResponse} />
             </div>
             <div className="hidden w-full h-full md:flex justify-center items-center">
               <DesktopRecordButton setParsedResponse={setParsedResponse} />
