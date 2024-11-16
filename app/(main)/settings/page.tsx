@@ -20,6 +20,7 @@ const Settings = () => {
   const { primaryWallet } = useDynamicContext();
   const [walletAddress, setWalletAddress] = useState("");
   const [connected, setConnected] = useState(false);
+  const [aiSignal, setAISignal] = useState("");
 
   useEffect(() => {
     if (primaryWallet && !walletAddress) {
@@ -28,11 +29,31 @@ const Settings = () => {
     }
   }, [primaryWallet]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/priceData", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log("gotten data:", data);
+      setAISignal(data);
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
     <div className="h-full w-full pb-8 mb-16 flex">
       <div className="w-full h-screen flex-col flex items-center pb-8 mb-16">
+        {/* <p>{data}</p> */}
         {connected && (
           <div className="w-full h-full p-4 md:flex flex-col gap-8 items-center hidden">
             <ToggleNotification connectedWallet={walletAddress} />
