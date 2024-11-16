@@ -17,11 +17,13 @@ type ActionConfirmationPopUpProps = {
   setAcceptAction: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessedArguments: React.Dispatch<React.SetStateAction<any>>;
   txData: any;
+  isExecuting: boolean;
 }
 
-const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, txData}: ActionConfirmationPopUpProps) => {
+const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, txData, isExecuting}: ActionConfirmationPopUpProps) => {
   const hasToolCall = 'tool_calls' in response;
   const [isTransfer, setIsTransfer] = useState<boolean>(false);
+  const [isSwap, setIsSwap] = useState<boolean>(false);
   const [type, setType] = useState<string>("");
 
   const [txCard, setTxCard] = useState<any>(null);
@@ -38,8 +40,13 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
           return;
         }
       }
-      
-      
+      if(args.function === "swap_tokens"){
+        console.log("Tx Data");
+        console.log(txData);
+        if(txData.tokenToBuy, txData.tokenToSell, txData.specifiedAmount){
+          setIsSwap(true);
+        }
+      }
       else{
         alert("Unknown Function")
       }
@@ -79,10 +86,10 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
   }
 
   const handleAcceptAction = () => {
+    console.log("Handle Accept")
     setAcceptAction(true);
     let args = processArguments(response.tool_calls[0]);
     setProcessedArguments(args);
-    setIsOpen(false);
   }
   //receiverName, receiverWalletAddress, transferToken, transferAmount
 
@@ -102,7 +109,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                 <SlQuestion size={120} />
                 <h1 className="text-2xl font-semibold bg-v2-text-gradient bg-clip-text text-transparent">Confirm Transaction</h1>
               </div>
-              {/*<div className="flex flex-col w-full h-full p-3">
+              <div className="flex flex-col w-full h-full p-3">
                     <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
                     <div className="flex w-full h-full overflow-auto border-[#94a3b8] border mt-3 mb-6">
                       <SyntaxHighlighter 
@@ -119,14 +126,15 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                         {JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}
                       </SyntaxHighlighter>
                     </div>
-              </div>*/}
+              </div>
               {isTransfer? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
+              {isSwap? "Swapping": ""}
               <div className="flex w-full justify-around items-center">
                 <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
                   <h1>Reject</h1>
                 </div>
-                <div className="flex justify-center items-center w-20 h-8 bg-green-600 rounded-full" onClick={handleAcceptAction}>
-                  <h1>Accept</h1>
+                <div className={`flex justify-center items-center w-20 h-8 ${isExecuting ? "bg-green-700" : "bg-green-600"} rounded-full`} onClick={isExecuting ? () => {} : handleAcceptAction} >
+                  <h1>{isExecuting? "Loading":"Accept"}</h1>
                 </div>
               </div>
     

@@ -44,11 +44,11 @@ export interface SwapParams {
 }
 
 /** Get Approval for a Token Transaction */
-export async function getApproval(tokenAddress:string, amount:number, chainId:number, walletAddress:string) {
+export async function getApproval(tokenAddress:string, amount:number, chainId:number, walletAddress:string, decimal:number) {
     try{
         // Search for Token Decimal
-        const token = await getTokenInformations([tokenAddress], chainId);
-        const decimal:number = token[tokenAddress].decimals;
+        // const token = await getTokenInformations([tokenAddress], chainId);
+        // const decimal:number = token[tokenAddress].decimals;
         await delay(2000);
         // Calculate the Approval Amount using the decimals
         const tokenApproval = BigInt(amount * (10**decimal)).toString();
@@ -71,6 +71,7 @@ export async function getApproval(tokenAddress:string, amount:number, chainId:nu
 /** Request Swap Transaction to One Inch */
 export async function getSwapTransaction(swapParams: SwapParams) {
     try{
+        console.log(swapParams);
         // Request Swap Transaction from 1inch
         const res = await fetch('/api/1inch/swap', {
             method: 'POST',

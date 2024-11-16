@@ -8,6 +8,7 @@ export async function POST(req: NextRequest){
     try{
         const data = await req.json();
         console.log(data);
+        console.log("CHECKING THE DATA")
         if(!data.src){
             return NextResponse.json({ error: 'Source Token Specified'}, {status: 500});
         }
@@ -26,6 +27,7 @@ export async function POST(req: NextRequest){
         if(!data.chainId){
             return NextResponse.json({ error: 'Chain Id Not Specified'}, {status: 500});
         }
+        console.log("NOW IT'S CALLING THE ONE INCH API")
         const endpoint = `https://api.1inch.dev/swap/v6.0/${data.chainId}/swap?src=${data.src}&dst=${data.dst}&amount=${data.amount}&from=${data.from}&slippage=${data.slippage}`;
         console.log(endpoint);    
         const tx = await fetch(endpoint, {
