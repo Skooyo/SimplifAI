@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <>
       {isLoggedIn ? (
-        <div className="w-full h-screen flex-col flex items-center gap-4">
+        <div className="w-full h-screen flex-col flex items-center gap-4 -mt-8">
           <div className="md:w-1/4">
             <div className="md:hidden w-screen h-50">
               <MobileRecordButton setParsedResponse={setParsedResponse} />
@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex text-xl mt-36 font-semibold w-full justify-center items-center">
+        <div className="flex text-xl mt-24 font-semibold w-full justify-center items-center">
           <p>Please connect your wallet to use our features.</p>
         </div>
       )}
