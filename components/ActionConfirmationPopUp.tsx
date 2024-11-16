@@ -40,12 +40,14 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
           console.log("Is Transfer")
           setIsTransfer(true);
           return;
+        }else{
+          console.log("Not Transfer")
         }
       }
       else if(args.function === "swap_tokens"){
         console.log("Tx Data");
         console.log(txData);
-        if(txData.tokenToBuy, txData.tokenToSell, txData.specifiedAmount){
+        if(txData.tokenToBuy, txData.tokenToSell, txData.amount){
           setIsSwap(true);
         }
       }
@@ -131,7 +133,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                     </div>
               </div>*/}
               {isTransfer? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
-              {isSwap? "Swapping": ""}
+              {isSwap? <SwapCard tokenSwapFrom={txData.tokenToSell} tokenSwapTo={txData.tokenToBuy} tokenSwapFromAmount={txData.amount}/>: ""}
               {isSettingAI? "Setting AI": ""}
               <div className="flex w-full justify-around items-center">
                 <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
