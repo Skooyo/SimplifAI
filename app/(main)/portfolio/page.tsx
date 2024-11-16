@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import { getTokenDetails, getTokenInformations } from "@/utils/oneinch";
 import { TokenInformation } from "@/types/index";
 import { CgSpinner } from "react-icons/cg";
-import { useAccount, useChainId, useReadContract } from 'wagmi'
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { config } from "@/utils/config";
 import PortfolioCard from "@/components/PortfolioCard";
 
-const CHAIN_ID = 1;
+const CHAIN_ID = 137;
 const WALLET_ADDRESS = "0x67BDB62C0FF92187490DD34ed1BCEEdD3e47d517";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -35,11 +35,13 @@ export default function Home() {
   const [userProfit, setuserProfit] = useState<number>(0);
   const [userROI, setUserROI] = useState<number>(0);
   const [portfolioFetched, setPortfolioFetched] = useState<boolean>(false);
-  const account = useAccount({config});
+  const account = useAccount({ config });
   const chainId = useChainId();
 
   const fetchPortfolio = async () => {
-    if(!account.address){return;}
+    if (!account.address) {
+      return;
+    }
     // Search for all tokens held by the user
     const tokenDetails = await getTokenDetails(WALLET_ADDRESS, CHAIN_ID); // mock data using mario's wallet and ethereum main net
     // const tokenDetails = await getTokenDetails(account.address, chainId);
@@ -59,18 +61,18 @@ export default function Home() {
     await delay(2000);
     const tokenInformations = await getTokenInformations(
       tokenAddresses,
-      chainId,
+      chainId
     );
     console.log(tokenInformations);
 
     tokenResult.forEach((item: TokenInformation, index: number) => {
       if (!tokenInformations) {
-        return
+        return;
       }
       const contractAddress = item.contract_address;
       const tokenInfo = tokenInformations[contractAddress];
       // Token would not be added if data is not found
-      if(tokenInfo){
+      if (tokenInfo) {
         tokenResult[index] = {
           ...tokenResult[index],
           tokenName: tokenInfo.name,
@@ -103,7 +105,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if(account.address){
+    if (account.address) {
       fetchPortfolio();
       setPortfolioFetched(true);
       console.log("fetched portfolio of", account.address);
@@ -111,7 +113,7 @@ export default function Home() {
   }, [account.address]);
 
   useEffect(() => {
-    if(account.address && portfolioFetched) {
+    if (account.address && portfolioFetched) {
       calcBalance();
       setLoading(false);
       setFinished(true);
@@ -120,7 +122,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="w-full h-screen flex-col flex items-center gap-4 pb-16">
+      <div className="w-full h-screen flex-col flex items-center gap-4 max-md:-mt-16 pb-16">
         {/* Spinner for when loading */}
         {(!finished || (loading && portfolio.length == 0)) && (
           <div className="w-full h-fit flex flex-col gap-4 items-center justify-center">
@@ -130,7 +132,7 @@ export default function Home() {
         )}
         {/* Balance and other information */}
         {finished && !loading && (
-          <div className="flex flex-col w-full h-fit items-center justify-center gap-4 pb-8">
+          <div className="flex flex-col w-full h-fit items-center justify-center gap-4 md:mt-8">
             <p className="w-fit font-semibold text-4xl">${userBal}</p>
             <div className="flex h-fit w-fit items-center justify-center gap-4">
               <p

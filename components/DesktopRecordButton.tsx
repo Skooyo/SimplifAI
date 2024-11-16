@@ -73,16 +73,16 @@ const DesktopRecordButton = ({
       </div>
       <button
         onClick={handleClick}
-        className={`w-1/3 h-fit rounded-full aspect-square size-10 transition-all duration-500 ${
+        className={`w-1/2 h-fit rounded-full aspect-square size-10 transition-all duration-500 ${
           recording ? "" : "border-2 border-s4/25 bg-s1/5 hover:border-s4"
         } text-white font-bold flex gap-2 justify-center items-center`}
       >
         {recording ? (
           <div className="circle pulse from-[rgba(199,242,132,1))] to-[rgba(0,190,240,1)] bg-v2-text-gradient rounded-full aspect-square size-10 w-full h-full flex justify-center items-center transition-all duration-500">
-            <FaMicrophone size={24} />
+            <FaMicrophone size={36} />
           </div>
         ) : (
-          <FaMicrophone size={24} />
+          <FaMicrophone size={36} />
         )}
       </button>
     </div>
