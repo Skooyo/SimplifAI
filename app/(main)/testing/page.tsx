@@ -57,7 +57,7 @@ export default function Home() {
             <MessageButton connectedWallet={walletAddress} />
           </div>
         )}
-        <Component chartData={mockTokenData} />
+        {/* <Component chartData={mockTokenData} /> */}
       </div>
     </>
   );
