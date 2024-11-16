@@ -90,6 +90,16 @@ const DesktopNavbar = () => {
             Contacts
           </Link>
         </li>
+        <li className="nav-li">
+          <Link
+            href="/settings"
+            className={`base-bold uppercase transition-colors duration-500 cursor-pointer hover:text-p1 max-lg:my-4 max-lg:h5 ${
+              pathname === "/settings" ? "text-p3" : "text-p4"
+            }`}
+          >
+            Settings
+          </Link>
+        </li>
       </ul>
       <div className="flex justify-center items-center">
         <img

@@ -33,6 +33,23 @@ export const getContactByOwner = async (contactOwner: string) => {
     }
 }
 
+export const getContactAddressByName = async (contactOwner: string, contactName: string) => {
+  try {
+    await connectToDatabase();
+
+    const contactBook = await getContactByOwner(contactOwner);
+
+    for (const contact of contactBook.contacts) {
+      if (contact.name === contactName) {
+        return JSON.parse(JSON.stringify(contact))
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching contact:", error);
+    handleError(error);
+  }
+}
+
 export const createContact = async (contactOwner: string, name: string, walletAddress: string) => {
   try {
     await connectToDatabase();

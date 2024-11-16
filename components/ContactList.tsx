@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import ContactCard from "./ContactCard";
-import { getContactByOwner } from "@/lib/db_actions/contact-actions";
+import {
+  getContactByOwner,
+  getContactAddressByName,
+} from "@/lib/db_actions/contact-actions";
 
 const ContactList = ({
   walletAddress,
@@ -12,16 +15,23 @@ const ContactList = ({
   setPageUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchContacts = async () => {
       if (walletAddress) {
         const fetchedContacts = (await getContactByOwner(walletAddress)) || [];
         setContacts(fetchedContacts.contacts || []);
+        const testContactByName = await getContactAddressByName(
+          walletAddress,
+          "testing add"
+        );
+        console.log(testContactByName);
       }
     };
 
     fetchContacts();
+    setLoading(false);
   }, [walletAddress, pageUpdate]);
 
   return (
