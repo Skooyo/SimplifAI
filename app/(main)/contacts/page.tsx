@@ -29,7 +29,7 @@ export default function Home() {
           setPageUpdate={setPageUpdate}
         />
       </div>
-      <div className="fixed bottom-28 right-5 flex items-end justify-end">
+      <div className="fixed bottom-28 md:bottom-12 right-5 flex items-end justify-end">
         <button
           className="rounded-3xl py-4 px-4 text-4xl text-white border-t-2 border-l-2 border-[#c7f284] bg-background hover:border-s4 transition-all duration-300 items-center flex justify-center"
           onClick={handleClick}

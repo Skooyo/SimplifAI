@@ -20,9 +20,15 @@ const ContactCard = ({ contact }: ContactCardProps) => {
         />
       </div>
       <div className="flex-grow h-full flex flex-col overflow-hidden">
-        <p className="truncate w-full">{contact.name}</p>
-        <p className="truncate w-full text-[#6e6e6e]">
-          {contact.walletAddress}
+        <p className="truncate w-full body-1">{contact.name}</p>
+        <p className="w-full text-[#6e6e6e]">
+          {`${contact.walletAddress.slice(
+            0,
+            12
+          )}...${contact.walletAddress.slice(
+            contact.walletAddress.length - 10,
+            contact.walletAddress.length
+          )}`}
         </p>
       </div>
     </div>

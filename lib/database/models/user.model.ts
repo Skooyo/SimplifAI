@@ -34,28 +34,28 @@ const UserSchema = new Schema<IUser>({
         type: [{
             tradeMin: {
                 type: Number,
-                required: false,
+                required: false, // min price
             },
             tradeMax: {
                 type: Number,
-                required: false,
+                required: false, // max price
             },
             orderType: {
                 type: String,
-                required: false,
+                required: false, // buy sell
             },
             quantity: {
                 type: Number,
-                required: false,
+                required: false, // num to sell or buy
             },
             transactionCount: {
                 type: Number,
-                required: false,
+                required: false, // default to 3, count down
             },
             lastTimeStampSinceTransaction: {
                 type: Date,
                 default: null,
-                required: false,
+                required: false, // date of last transaction
             },
         }],
     default: [],
