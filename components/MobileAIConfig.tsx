@@ -2,7 +2,7 @@ import Image from "next/image";
 import { FaArrowRightArrowLeft } from "react-icons/fa6";
 import BarPercentage from "./BarPercentage";
 
-interface AIConfigParams {
+interface MobileAIConfigParams {
   tradeMin: number; // min price
   tradeMax: number; // max price
   orderType: string; // buy or sell
@@ -14,7 +14,7 @@ interface AIConfigParams {
 const ETHLogo = "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png";
 const USDCLogo = "/usdc.svg";
 
-const AIConfig = ({ config }: { config: AIConfigParams }) => {
+const MobileAIConfig = ({ config }: { config: MobileAIConfigParams }) => {
   return (
     <>
       <div className="flex flex-col md:w-[33%] w-[80%] h-1/3 pt-2 pb-2 font-semibold backdrop-blur-sm card-gradient rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#9d9d9d]">
@@ -64,6 +64,6 @@ const AIConfig = ({ config }: { config: AIConfigParams }) => {
   );
 };
 
-export default AIConfig;
+export default MobileAIConfig;
 
 
