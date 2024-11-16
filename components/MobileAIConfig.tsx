@@ -17,12 +17,12 @@ const USDCLogo = "/usdc.svg";
 const MobileAIConfig = ({ config }: { config: MobileAIConfigParams }) => {
   return (
     <>
-      <div className="flex flex-col md:w-[33%] w-[80%] h-1/3 pt-2 pb-2 font-semibold backdrop-blur-sm card-gradient rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#9d9d9d]">
+      <div className="flex flex-col w-[80%] h-1/3 pt-2 pb-2 font-semibold backdrop-blur-sm card-gradient rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#9d9d9d]">
         
         {/* top half */}
-        <div className="flex w-full h-[40%]">
+        <div className="flex w-full h-[30%]">
           {/* Token Swap thing */}
-          <div className="flex gap-2 w-full h-full p-4">
+          <div className="flex gap-2 w-full h-full p-4 items-center justify-center">
             <div className="h-full w-fit flex aspect-square relative">
               <Image
                 src={ETHLogo}
@@ -45,17 +45,14 @@ const MobileAIConfig = ({ config }: { config: MobileAIConfigParams }) => {
               />
             </div>
           </div>
-
-          <div className="flex flex-col gap-3 w-full h-[50%] p-4">
-            <p className="text-3xl text-white">{config.orderType == "BUY" ? "Buy" : "Sell"} ETH</p>
-            <p className="text-2xl text-white">Range: {config.tradeMin} - {config.tradeMax} USDC</p>
-          </div>
         </div>
 
         {/* bot half */}
-        <div className="w-full h-fit flex-col p-2 px-5 mt-2 gap-6 flex">
-          <p className="text-2xl text-white">Token Quantity: {config.quantity} ETH</p>
-          <p className="text-2xl text-white">Order Completion:</p>
+        <div className="w-full h-fit flex-col p-2 px-5 gap-2 flex">
+          <p className="text-md text-white">{config.orderType == "BUY" ? "Buy" : "Sell"} ETH</p>
+          <p className="text-md text-white">Range: {config.tradeMin} - {config.tradeMax} USDC</p>
+          <p className="text-md text-white">Token Quantity: {config.quantity} ETH</p>
+          <p className="text-md text-white">Order Completion:</p>
           <BarPercentage barPercentage={Math.abs(config.transactionCount - 3) * 100 / 3} option="" />
         </div>
 

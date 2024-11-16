@@ -4,6 +4,7 @@ import ToggleNotification from "@/components/ToggleNotification";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import { useEffect, useState } from "react";
 import AIConfig from "@/components/AIConfig";
+import MobileAIConfig from "@/components/MobileAIConfig";
 
 
 const mockConfig = {
@@ -34,10 +35,14 @@ const Settings = () => {
       <div className="w-full h-screen flex-col flex items-center pb-8 mb-16">
         {connected && (
           <div className="w-full h-full p-4 md:flex flex-col gap-8 items-center hidden">
-            <AIConfig config={mockConfig} />
-            <AIConfig config={mockConfig} />
-            <AIConfig config={mockConfig} />
             <ToggleNotification connectedWallet={walletAddress} />
+            <AIConfig config={mockConfig} />
+          </div>
+        )}
+        {connected && (
+          <div className="w-full h-full -mt-16 flex flex-col gap-8 items-center md:hidden">
+            <ToggleNotification connectedWallet={walletAddress} />
+            <MobileAIConfig config={mockConfig} />
           </div>
         )}
       </div>
