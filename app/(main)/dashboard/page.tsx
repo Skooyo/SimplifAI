@@ -4,7 +4,6 @@ import DesktopRecordButton from "@/components/DesktopRecordButton";
 import MobileRecordButton from "@/components/MobileRecordButton";
 import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useState, useEffect } from "react";
-import NotificationList from "@/components/NotificationList";
 import ActionConfirmationPopUp from "@/components/ActionConfirmationPopUp";
 import ActionErrorPopUp from "@/components/ActionErrorPopUp";
 import { getContactByOwner } from "@/lib/db_actions/contact-actions";
@@ -178,36 +177,38 @@ export default function Home() {
 
   const handleOpenModal = () => {
     setIsOpen(true);
-  }
+  };
 
   return (
     <>
       {isLoggedIn ? (
         <div className="w-full h-screen flex-col flex items-center gap-4">
-          {/** isProcessing? "Loading" */}
-          <div className="md:hidden w-full h-50">
-            <MobileRecordButton />
-          </div>
-          <div className="hidden md:block w-full h-50">
-            <DesktopRecordButton setParsedResponse={setParsedResponse} />
-          </div>
-          <div>
-            {
-              Object.keys(processedArguments).length > 0 && (
+          <div className="md:w-1/4">
+            <div className="md:hidden w-screen h-50">
+              <MobileRecordButton setParsedResponse={setParsedResponse} />
+            </div>
+            <div className="hidden w-full h-full md:flex justify-center items-center">
+              <DesktopRecordButton setParsedResponse={setParsedResponse} />
+            </div>
+            <div>
+              {Object.keys(processedArguments).length > 0 && (
                 <p>{JSON.stringify(processedArguments, null, 2)}</p>
-              )
-            }
-          </div>
-          <div className="w-full h-50">
-            <NotificationList />
-          </div>
+              )}
+            </div>
 
-          <ActionConfirmationPopUp response={parsedResponse} isOpen={isOpen} setIsOpen={setIsOpen} setAcceptAction={setAcceptAction} setProcessedArguments={setProcessedArguments} />
           <ActionErrorPopUp message={errorMessage} isOpen={isErrorOpen} setIsOpen={setIsErrorOpen} />
+          <ActionConfirmationPopUp
+              response={parsedResponse}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              setAcceptAction={setAcceptAction}
+              setProcessedArguments={setProcessedArguments}
+          />
+          </div>
         </div>
       ) : (
-        <div className="flex text-xl font-semibold w-full justify-center items-center">
-          <p>Please connect your wallet to use our features.</p>
+        <div className="flex text-xl mt-36 font-semibold w-2/3 justify-center items-center text-center mx-auto">
+          Please connect your wallet to use our features.
         </div>
       )}
     </>

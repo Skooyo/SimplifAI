@@ -62,10 +62,14 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptInResponse = await user.notification.subscribe(
+<<<<<<< HEAD
       `eip155:11155111:${SIMPLIFAI_CHANNEL_ADDRESS}`
+=======
+      `eip155:11155111:${process.env.SIMPLIFAI_CHANNEL_ADDRESS}`
+>>>>>>> 02cf0e9a60d1956177c617a1f3d9f781041c459c
     );
     console.log("OptInResponse", OptInResponse);
-    if ('status' in OptInResponse &&OptInResponse.status === 204) {
+    if ('status' in OptInResponse && OptInResponse.status === 204) {
       setIsSubscribed(true);
     }
   }
@@ -75,7 +79,11 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptOutResponse = await user.notification.unsubscribe(
+<<<<<<< HEAD
       `eip155:11155111:${SIMPLIFAI_CHANNEL_ADDRESS}`
+=======
+      `eip155:11155111:${process.env.SIMPLIFAI_CHANNEL_ADDRESS}`
+>>>>>>> 02cf0e9a60d1956177c617a1f3d9f781041c459c
     );
     console.log("OptOutResponse", OptOutResponse);
     if ('status' in OptOutResponse && OptOutResponse.status === 204) {
