@@ -7,6 +7,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import { Rings, Audio, BallTriangle, Bars, Circles, Grid, Hearts, Oval, Puff, SpinningCircles, TailSpin, ThreeDots } from 'react-loading-icons';
 
 type ActionConfirmationPopUpProps = {
   response: any,
@@ -14,7 +15,7 @@ type ActionConfirmationPopUpProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAcceptAction: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessedArguments: React.Dispatch<React.SetStateAction<any>>;
-  setParsedResponse?: React.Dispatch<React.SetStateAction<any>>;
+  setParsedResponse: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, setParsedResponse}: ActionConfirmationPopUpProps) => {
@@ -69,8 +70,8 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
               <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
                 <div className="flex flex-col justify-center items-center w-full  p-3 text-wrap">
                   <SlQuestion size={120} />
-                  <h1 className="text-3xl font-bold">Action</h1>
-                    <h1 className="text-3xl font-bold">Confirmation</h1>
+                  <h1 className="text-3xl font-bold mt-3">Action</h1>
+                  <h1 className="text-3xl font-bold">Confirmation</h1>
                 </div>
                 <div className="flex flex-col w-full h-full p-3">
                     <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
@@ -119,8 +120,8 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
             ) : (
               <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
                 <div className="flex flex-col justify-center items-center w-full  p-3 text-wrap">
-                  <FiAlertTriangle size={120} color={"#f87171"} />
-                  <h1 className="text-3xl font-extrabold">Loading...</h1>
+                  <BallTriangle />
+                  <h1 className="text-3xl font-extrabold mt-5">Processing...</h1>
                 </div>
                 <div className="flex w-full h-full p-3">
                     <h1 className="text-center text-xl">Please wait a moment as we analyse your prompt</h1>
