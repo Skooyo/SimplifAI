@@ -8,6 +8,8 @@ import { SlQuestion } from "react-icons/sl";
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import TransferCard from '@/components/confirmation-components/Transfer';
+import Button from '@/components/landing-components/Button';
+import RedButton from './landing-components/RedButton';
 
 
 type ActionConfirmationPopUpProps = {
@@ -61,16 +63,16 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
       top: '50%',
       left: '50%',
       right: 'auto',
-      height: "600px",
-      width: "300px",
+      height: "auto",
+      width: "auto",
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       backgroundColor: "#112233",
       //border: "2px solid #42bded",
       borderRadius: "10px", // Add this line for rounded border
-      padding: "10px",
-      boxShadow: '0 0 10px 5px rgba(46, 211, 183, 0.5)',
+      padding: "0px",
+      boxShadow: '0 0 10px 2px rgba(46, 211, 183, 0.5)',
     },
   };
 
@@ -97,36 +99,21 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
       >
         {
           hasToolCall ? (
-            <div className="flex flex-col h-full w-full transform transition hover:shadow-lg">
-              <div className="flex flex-col justify-center text-center items-center w-full h-14 py-3">
-                <SlQuestion size={120} />
-                <h1 className="text-2xl font-semibold bg-v2-text-gradient bg-clip-text text-transparent">Confirm Transaction</h1>
+            <div className="flex flex-col h-full w-full transform transition hover:shadow-lg backdrop-blur-sm card-gradient pt-4">
+              <div className="flex flex-col justify-center text-center items-center w-full py-3 mt-4">
+                <h1 className="text-3xl font-semibold bg-v2-text-gradient bg-clip-text text-transparent ml-6 mr-6">Confirm Transaction</h1>
               </div>
-              {/*<div className="flex flex-col w-full h-full p-3">
-                    <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
-                    <div className="flex w-full h-full overflow-auto border-[#94a3b8] border mt-3 mb-6">
-                      <SyntaxHighlighter 
-                        language="json" 
-                        style={darcula} 
-                        customStyle={{
-                        width: "100%", 
-                        maxHeight: "100%", 
-                        overflow: "auto", 
-                        whiteSpace: "pre-wrap",
-                        fontSize: "1em"
-                        }}
-                        >
-                        {JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}
-                      </SyntaxHighlighter>
-                    </div>
-              </div>*/}
-              {isTransfer? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
-              <div className="flex w-full justify-around items-center">
-                <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
-                  <h1>Reject</h1>
-                </div>
-                <div className="flex justify-center items-center w-20 h-8 bg-green-600 rounded-full" onClick={handleAcceptAction}>
-                  <h1>Accept</h1>
+              <div className="w-full ">
+                {isTransfer ? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
+              </div>
+              <div className="flex w-full justify-between items-center mb-10 pl-6 pr-6">
+                <RedButton onClick={handleClosePopUp}>
+                  <h1 className="text-xl">Reject</h1>
+                </RedButton>
+                <div className="border border-[#2ed3b7] rounded-xl">
+                  <Button  onClick={handleAcceptAction}>
+                    <h1 className="text-xl">Accept</h1>
+                  </Button>
                 </div>
               </div>
     

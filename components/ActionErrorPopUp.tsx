@@ -5,6 +5,7 @@ import { useState } from "react";
 import processArguments from "@/utils/processArguments";
 import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
+import Button from './landing-components/Button';
 // import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 // import SyntaxHighlighter from 'react-syntax-highlighter';
 
@@ -24,16 +25,17 @@ const ActionConfirmationPopUp = ({message, isOpen, setIsOpen}: ActionConfirmatio
       top: '50%',
       left: '50%',
       right: 'auto',
-      height: "600px",
-      width: "300px",
+      height: "auto",
+      width: "auto",
+      minWidth: "330px",
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
       backgroundColor: "#112233",
       //border: "2px solid #42bded",
       borderRadius: "10px", // Add this line for rounded border
-      padding: "10px",
-      boxShadow: '0 0 10px 5px rgba(46, 211, 183, 0.5)',
+      padding: "0px",
+      boxShadow: '0 0 10px 2px rgba(46, 211, 183, 0.5)',
     },
   };
 
@@ -50,19 +52,17 @@ const ActionConfirmationPopUp = ({message, isOpen, setIsOpen}: ActionConfirmatio
         onRequestClose={() => setIsOpen(false)}
         style={customStyles as Styles}
       >  
-        <div className="flex flex-col h-full w-full transform transition hover:shadow-lg bg-gray-800 p-5">
-            <div className="flex flex-col justify-center items-center w-full p-3 pt-8 text-wrap">
-            <FiAlertTriangle size={120} color={"#f87171"} />
-            <h1 className="text-3xl text-red-400 font-extrabold pt-4">Error</h1>
-            <h1 className="text-xl font-semibold">{message? message : "Unknown Error Occured"}</h1>
+        <div className="flex flex-col h-full w-full transform transition hover:shadow-lg backdrop-blur-sm card-gradient p-5">
+            <div className="flex flex-col justify-center items-center w-full p-4 text-wrap">
+            <FiAlertTriangle size={60} color={"#f87171"} />
+            <h1 className="text-4xl text-red-400 font-extrabold pb-8">Error</h1>
+            <h1 className="text-2xl font-semibold text-gray-300">{message? message : "Unknown Error Occured"}</h1>
+                <h1 className="text-center text-lg text-gray-400">Please Try Again</h1>
             </div>
-            <div className="flex w-full h-full p-3">
-                <h1 className="text-center text-xl">Please Try Again</h1>
-            </div>
-            <div className="flex w-full justify-around items-center p-3">
-            <div className="flex justify-center items-center w-28 h-10 bg-red-500 rounded-full p-2" onClick={handleClosePopUp}>
-                <h1 className="text-2xl" onClick={()=>{setIsOpen(false);}}>Close</h1>
-            </div>
+            <div className="flex w-full justify-around items-center p-4 mt-4">
+              <Button onClick={handleClosePopUp}>
+                <h1 className="text-xl text-red-400">Close</h1>
+              </Button>
             </div>
         </div>
       </Modal>
