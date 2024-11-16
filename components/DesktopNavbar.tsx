@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import React from "react";
 
 const DesktopNavbar = () => {
@@ -9,7 +10,15 @@ const DesktopNavbar = () => {
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full transition-all duration-500 max-lg:py-4 py-2 bg-black bg-opacity-50 backdrop-blur-[8px] flex justify-between items-center px-20">
-      <img src="/images/xora.svg" width={160} height={55} alt="logo" />
+      <div className="flex justify-center items-center">
+        <img src="/images/xora.svg" width={160} height={55} alt="logo" />
+        <div>
+          <IoIosNotificationsOutline
+            className="opacity-0 pointer-events-none"
+            size={30}
+          />
+        </div>
+      </div>
       <ul className="flex items-center justify-center gap-20">
         <li className="nav-li">
           <Link
@@ -42,13 +51,18 @@ const DesktopNavbar = () => {
           </Link>
         </li>
       </ul>
-      <img
-        src="/images/xora.svg"
-        width={160}
-        height={55}
-        alt="logo"
-        className="opacity-0 pointer-events-none"
-      />
+      <div className="flex justify-center items-center">
+        <img
+          src="/images/xora.svg"
+          width={160}
+          height={55}
+          alt="logo"
+          className="opacity-0 pointer-events-none"
+        />
+        <div className="cursor-pointer">
+          <IoIosNotificationsOutline size={30} />
+        </div>
+      </div>
     </div>
   );
 };
