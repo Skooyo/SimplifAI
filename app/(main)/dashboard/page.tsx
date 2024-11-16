@@ -25,7 +25,24 @@ import { ERC20ABI } from "@/utils/abi";
 import { getApproval, getSwapTransaction } from "@/utils/oneinch";
 import { addOrdertoOrderBook } from "@/lib/db_actions/user-actions";
 
+import { notification } from "antd";
+
 export default function Home() {
+  // for notifications
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (isWaiting: boolean, hash: string) => {
+    api.open({
+      message: isWaiting ? "Initializing Transaction" : "Transaction Confirmed",
+      description: isWaiting
+        ? `Please wait a few moments. Click to view your transaction: https://polygonscan.com/tx/${hash}`
+        : `Your transaction has been confirmed. Click to view your transaction: https://polygonscan.com/tx/${hash}`,
+      onClick: () => {
+        window.location.href = `https://polygonscan.com/tx/${hash}`;
+      },
+      duration: 10,
+    });
+  };
+
   const { primaryWallet } = useDynamicContext();
   const isLoggedIn = useIsLoggedIn();
   const [parsedResponse, setParsedResponse] = useState<any>({});
@@ -99,7 +116,8 @@ export default function Home() {
   }
 
   async function openConfirmation(parsedResponse: any) {
-    // console.log("Processing Confirmation");
+    console.log("Processing Confirmation");
+    openNotification(true, "hash value");
     const hasToolCall = "tool_calls" in parsedResponse;
     if (!hasToolCall) {
       initializeError("Invalid Prompt");
@@ -376,6 +394,7 @@ export default function Home() {
 
   return (
     <>
+      {contextHolder}
       {isLoggedIn ? (
         <div className="w-full h-screen flex-col flex items-center gap-4 -mt-8">
           {hash && <div>Transaction Hash: {hash}</div>}
