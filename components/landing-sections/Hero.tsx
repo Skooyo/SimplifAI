@@ -21,8 +21,8 @@ const Hero = () => {
                 your crypto experience
               </div>
 
-              <div className="rounded-xl bg-v2-text-gradient bg-clip-text text-transparent group-disabled:bg-none group-disabled:text-[#CFF3FF] group-disabled:text-opacity-25 md:-mt-3 md:px-3 text-sm font-semibold leading-none flex justify-center items-center gap-3">
-                <span className="md:-ml-7 mb-6 h1 uppercase max-lg:mb-7 max-lg:h2 max-md:mb-4 max-md:text-5xl max-md:leading-12">
+              <div className="rounded-xl bg-v2-text-gradient bg-clip-text text-transparent group-disabled:bg-none group-disabled:text-[#CFF3FF] group-disabled:text-opacity-25 md:-mt-3 text-sm font-semibold leading-none">
+                <span className="mb-6 h1 uppercase max-lg:mb-7 max-lg:h2 max-md:mb-4 max-md:text-5xl max-md:leading-12">
                   Simplified
                 </span>
               </div>

@@ -56,7 +56,7 @@ const MessageButton = ({
   const handleMessageSend = async () => {
     await sendMessage({
       receiverAdr: connectedWallet,
-      message: "Hello! This is a test message from Simplifai.",
+      message: "I bought bitcoin for you!",
     });
     console.log("message and notification sent")
   }

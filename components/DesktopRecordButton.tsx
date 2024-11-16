@@ -52,9 +52,9 @@ const DesktopRecordButton = ({
 
   return (
     <div
-      className={`mt-20 w-full h-full items-center flex flex-col p-4 gap-8 text-white`}
+      className={`mt-20 w-full h-[50vh] items-center flex flex-col p-4 gap-8 text-white`}
     >
-      <div className="w-full card-gradient rounded-xl h-1/5 flex items-center justify-center gap-4 overflow-hidden">
+      <div className="w-full card-gradient rounded-xl h-1/4 flex items-center justify-center gap-4 overflow-hidden">
         <div className="w-full h-full p-4">
           <textarea
             placeholder="Enter prompt or press record and speak into the microphone"

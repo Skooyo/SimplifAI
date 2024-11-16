@@ -12,7 +12,7 @@ const Header = () => {
 
   const fetchUser = async (userID: string) => {
     return await getUserByUserID(userID);
-  }
+  };
 
   useEffect(() => {
     if (isLoggedIn && primaryWallet) {
@@ -20,7 +20,7 @@ const Header = () => {
       const user = fetchUser(primaryWallet.address);
       console.log("logged user is :", user);
     }
-  }, [isLoggedIn, primaryWallet])
+  }, [isLoggedIn, primaryWallet]);
 
   return (
     <>
@@ -36,7 +36,7 @@ const Header = () => {
           />
         </div>{" "}
         {/* BG Image Placeholder */}
-        <div className="w-1/4 md:w-1/12 bg-blue-500 -mt-24 rounded-full aspect-square relative overflow-hidden p-20">
+        <div className="w-1/3 md:w-1/12 bg-blue-500 -mt-24 mb-6 rounded-full aspect-square relative overflow-hidden p-20">
           <Image
             src={`https://api.cloudnouns.com/v1/pfp?text=${primaryWallet?.address}`}
             fill
