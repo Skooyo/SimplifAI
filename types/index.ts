@@ -11,3 +11,15 @@ export interface TokenInformation {
     tokenSymbol? :string;
     tokenLogo? :string;
 }
+
+export interface addOrdertoOrderBookParams {
+    userID: string;
+    newOrder: {
+        tradeMin: number,
+        tradeMax: number,
+        orderType: string,
+        quantity: number,
+        transactionCount: number,
+        lastTimeStampSinceTransaction: Date,
+    }
+}

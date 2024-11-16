@@ -8,6 +8,7 @@ import NotificationWidget from "@/components/NotificationWidget";
 import MessageButton from "@/components/MessageButton";
 import { Component } from "@/components/LineChart";
 import RetriveNotificationButton from "@/components/RetriveNotificationButton";
+import AddOrderTest from "@/components/AddOrderTest";
 
 export default function Home() {
   const { primaryWallet } = useDynamicContext();
@@ -57,6 +58,7 @@ export default function Home() {
             <ToggleNotification connectedWallet={walletAddress} />
             <MessageButton connectedWallet={walletAddress} />
             <RetriveNotificationButton connectedWallet={walletAddress} />
+            <AddOrderTest />
           </div>
         )}
         {/* <Component chartData={mockTokenData} /> */}
