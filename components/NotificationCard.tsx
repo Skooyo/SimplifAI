@@ -9,7 +9,7 @@ interface Notification {
 const NotificationCard = ({ notification }: { notification: Notification }) => {
   return (
     <>
-      <div className="flex w-full h-full pt-2 pb-2 items-center backdrop-blur-sm card-gradient border-l-8 border-[#c7f284] rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#9d9d9d]">
+      <div className="flex w-full h-full pt-2 pb-2 items-center backdrop-blur-sm card-gradient border-l-8 border-[#c7f284] rounded-xl drop-shadow-lg hover:drop-shadow-2xl text-[#bdbdbd] font-semibold">
         <div className="w-24 mx-5 h-16 flex justify-center items-center">
           <Image
             src="/push-color.png"

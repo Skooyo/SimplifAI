@@ -30,9 +30,9 @@ const Settings = () => {
 
   return (
     <>
-      <div className="w-full h-screen flex-col flex items-center gap-4">
+      <div className="w-full h-screen flex-col flex items-center">
         {connected && (
-          <div className="w-full h-fit p-4 flex flex-col gap-8 items-center justify-center">
+          <div className="w-full h-full p-4 flex flex-col gap-8 items-center">
             <AIConfig config={mockConfig} />
             <ToggleNotification connectedWallet={walletAddress} />
           </div>
