@@ -35,14 +35,13 @@ const ContactList = ({
   }, [walletAddress, pageUpdate]);
 
   return (
-    <>
-      {loading && <p>Loading contacts...</p>}
-      {!loading && contacts.map(
+    <div className="flex flex-col gap-3 w-full items-center">
+      {contacts.map(
         (contact: { name: string; walletAddress: string }, index: number) => (
           <ContactCard key={index} contact={contact} />
         )
       )}
-    </>
+    </div>
   );
 };
 
