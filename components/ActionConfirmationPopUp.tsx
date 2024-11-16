@@ -8,6 +8,7 @@ import { SlQuestion } from "react-icons/sl";
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import TransferCard from '@/components/confirmation-components/Transfer';
+import SwapCard from '@/components/confirmation-components/Swap';
 
 
 type ActionConfirmationPopUpProps = {
@@ -24,6 +25,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
   const hasToolCall = 'tool_calls' in response;
   const [isTransfer, setIsTransfer] = useState<boolean>(false);
   const [isSwap, setIsSwap] = useState<boolean>(false);
+  const [isSettingAI, setIsSettingAI] = useState<boolean>(false);
   const [type, setType] = useState<string>("");
 
   const [txCard, setTxCard] = useState<any>(null);
@@ -40,11 +42,17 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
           return;
         }
       }
-      if(args.function === "swap_tokens"){
+      else if(args.function === "swap_tokens"){
         console.log("Tx Data");
         console.log(txData);
         if(txData.tokenToBuy, txData.tokenToSell, txData.specifiedAmount){
           setIsSwap(true);
+        }
+      }
+      else if(args.function === "settingAI"){
+        console.log("Setting AI");
+        if(txData){
+          setIsSettingAI(true);
         }
       }
       else{
@@ -54,11 +62,6 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
       console.log(error);
     }
   }, [isOpen]);
-
-  useEffect(()=>{
-    console.log("Printing the txData");
-    console.log(txData);
-  }, [txData])
 
   const customStyles = {
     overlay: {
@@ -109,7 +112,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                 <SlQuestion size={120} />
                 <h1 className="text-2xl font-semibold bg-v2-text-gradient bg-clip-text text-transparent">Confirm Transaction</h1>
               </div>
-              <div className="flex flex-col w-full h-full p-3">
+              {/*<div className="flex flex-col w-full h-full p-3">
                     <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
                     <div className="flex w-full h-full overflow-auto border-[#94a3b8] border mt-3 mb-6">
                       <SyntaxHighlighter 
@@ -126,9 +129,10 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                         {JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}
                       </SyntaxHighlighter>
                     </div>
-              </div>
+              </div>*/}
               {isTransfer? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
               {isSwap? "Swapping": ""}
+              {isSettingAI? "Setting AI": ""}
               <div className="flex w-full justify-around items-center">
                 <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
                   <h1>Reject</h1>

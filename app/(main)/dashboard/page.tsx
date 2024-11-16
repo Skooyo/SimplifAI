@@ -18,6 +18,7 @@ import { setNextBlockBaseFeePerGas } from "viem/actions";
 import { useSendTransaction, useWriteContract, useWaitForTransactionReceipt, type BaseError, } from 'wagmi';
 import { ERC20ABI } from "@/utils/abi";
 import { getApproval, getSwapTransaction, } from "@/utils/oneinch";
+import { addOrdertoOrderBook } from "@/lib/db_actions/user-actions";
 
 export default function Home() {
   const { primaryWallet } = useDynamicContext();
@@ -57,6 +58,11 @@ export default function Home() {
   const { isLoading: isSwapConfirming, isSuccess: isSwapConfirmed } = useWaitForTransactionReceipt({ hash: swapHash }); 
 
   // Update Status once transaction confirmed
+  useEffect(()=>{
+    if(isPending == false){
+      setIsExecuting(false);
+    }
+  }, [isPending])
   useEffect(()=>{
     console.log("Tx Status Changed")
     if(swapIsPending == false){
@@ -111,7 +117,7 @@ export default function Home() {
       } else if (args.function === "swap_tokens") {
         checkSwap(args);
       } else if (args.function === "settingAI") {
-        alert("Updating AI Configuration");
+        checkAISetting(args);
       } else {
         initializeError("Invalid Prompt");
         return;
@@ -191,8 +197,48 @@ export default function Home() {
 
   async function checkAISetting(args:any){
     // Check Arguments
-    const {} = args.arguments as any;
+    const {tokenToBuy, tokenToSell, specifiedAmmount, specifiedToken, buyMax, buyMin, sellMax, sellMin} = args.arguments as any;
+    console.log(args.arguments);
+    if(!buyMax && !buyMin && !sellMax && !sellMin){
+      initializeError("Configuration Price not set");return;
+    }else if(!tokenToBuy && !tokenToSell){
+      initializeError("Token Not Specified");return;
+    }
 
+    const txData = {
+      transactionCount: 3,
+      lastTimeStampSinceTransaction: null,
+    } as any;
+
+    if(buyMin || buyMax){
+      txData.tradeMin = buyMin;
+      txData.tradeMax = buyMax;
+      if(tokenToBuy && tokenToBuy === "ETH"){
+        txData.orderType = "Buy";
+        txData.quantity = specifiedAmmount;
+      }
+      else if(tokenToSell== "ETH" || tokenToBuy=="USDC"){
+        txData.orderType = "Sell";
+        if(buyMin){ txData.quantity = specifiedAmmount/buyMin;}
+        else{txData.quantity = specifiedAmmount/buyMax;}
+      }
+      else{ initializeError("Invalid Token"); return; }
+    }
+    else{
+      txData.tradeMin = sellMin;
+      txData.tradeMax = sellMax;
+      if(tokenToSell && tokenToSell === "ETH"){
+        txData.orderType = "Sell";
+        txData.quantity = specifiedAmmount;
+      }
+      else if(tokenToSell== "USDC" || tokenToBuy=="ETH"){
+        txData.orderType = "Buy";
+        if(sellMin){ txData.quantity = specifiedAmmount/sellMin;}
+        else{txData.quantity = specifiedAmmount/sellMax;}
+      }
+      else{ initializeError("Invalid Token"); return; }
+    }
+    setTxData(txData);
     setIsOpen(true);
   }
 
@@ -205,7 +251,7 @@ export default function Home() {
         if (!txData){alert("Unknown Error Occured");return;}
         console.log(txData);
         console.log("Transferring ERC-20 Token");
-        const parsedAmount = BigInt(txData.specifiedAmmount * Math.pow(10, txData.transferToken.decimals));
+        const parsedAmount = BigInt(txData.transferAmount * Math.pow(10, txData.transferToken.decimals));
         console.log("Transfered Amount:", parsedAmount);
   
         writeContract({
@@ -241,6 +287,12 @@ export default function Home() {
           setIsApproving(true);
           sendTransaction(approvalTx);
         }
+      }
+      else if(processedArguments.function === "settingAI"){
+        console.log("Adding AI Configuration")
+        await addOrdertoOrderBook({userID: account.address as string, newOrder:txData});
+        setIsExecuting(false);
+        setIsOpen(false);
       }
       else{
         alert("Unknown Error Occured");
