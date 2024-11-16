@@ -14,6 +14,7 @@ import { set } from "mongoose";
 import {USDC, WETH} from "@/utils/defaultToken";
 import { ETH_CHAIN_ID } from "@pushprotocol/restapi/src/lib/config";
 import { tokenList} from "@/utils/tokenList";
+import { setNextBlockBaseFeePerGas } from "viem/actions";
 
 export default function Home() {
   const [connected, setConnected] = useState(false);
@@ -43,6 +44,7 @@ export default function Home() {
   const [amount, setAmount] = useState(0);
   const [transferedUser, setTransferedUser] = useState("");
   const [transferedName, setTransferedName] = useState("");
+  const [txData, setTxData] = useState<any>(null);
 
   useEffect(() => {
     if (primaryWallet) {
@@ -126,14 +128,24 @@ export default function Home() {
     setAmount(specifiedAmount);
     // Search Information of the Transfered Token
     // Search on tokenList for the token information
+    let token;
     if (specifiedToken === USDC.symbol) {
+      token= USDC;
       setTokenInformation(USDC);
     }else if (specifiedToken === "ETH"){
+      token= WETH;
       setTokenInformation(WETH);
     }else{
       initializeError("Token Not Found");return;
     }
     // Open Confirmation
+    setTxData({
+      receiverName: transferTo,
+      receiverWalletAddress: transferedUser.walletAddress,
+      transferToken: token,
+      transferAmount: specifiedAmount,
+    });
+    console.log("IT's updated motherfucker")
     setIsOpen(true);
   }
 
@@ -153,19 +165,42 @@ export default function Home() {
     else if (tokenToBuy === "ETH"){setTokenToBuy(WETH);}
     if(tokenToSell === USDC.symbol){setTokenToSell(USDC);}
     else if (tokenToSell === "ETH"){setTokenToSell(WETH);}
-
     // Final Check
-    if (tokenToBuy === tokenToSell){
-      initializeError("Invalid Swap");return;
-    }
-    if(!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken){
-      initializeError("Invalid Swap");return;
-    }
+    if (tokenToBuy === tokenToSell){initializeError("Invalid Swap");return;}
+    if(!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken){initializeError("Invalid Swap");return;}
+    setIsOpen(true);
+  }
+
+  async function checkAISetting(args:any){
+    // Check Arguments
+    const {} = args.arguments as any;
+
     setIsOpen(true);
   }
 
   async function executeTx(args:any){
     try {
+      if(processedArguments.function === "transfer_tokens" ){
+        console.log("Executing Transfer");
+        if (!txData){
+          alert("Unknown Error Occured");
+        }
+        console.log(txData);
+        if(txData.transferToken.symbol === "WETH"){
+          console.log("Transfering Native Token");
+        }else{
+          console.log("Transferring ERC-20 Token");
+        }
+
+
+        // const tx = await account.executeTransaction({
+        //   to: txData.transferToken.address,
+        //   data: txData.transferToken.contract.methods.transfer(txData.receiverWalletAddress, txData.transferAmount).encodeABI(),
+        //   value: 0,
+        // });
+        console.log(tx);
+      }
+      
       setErrorMessage("");
       alert("Executing Transaction");
     } catch (error) {
@@ -174,10 +209,6 @@ export default function Home() {
     }
     setIsOpen(false);
   }
-
-  const handleOpenModal = () => {
-    setIsOpen(true);
-  };
 
   return (
     <>
@@ -203,6 +234,7 @@ export default function Home() {
               setIsOpen={setIsOpen}
               setAcceptAction={setAcceptAction}
               setProcessedArguments={setProcessedArguments}
+              txData={txData}
           />
           </div>
         </div>

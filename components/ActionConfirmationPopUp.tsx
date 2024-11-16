@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { Styles } from 'react-modal';
 import { useState } from "react";
@@ -7,6 +7,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
 import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import TransferCard from '@/components/confirmation-components/Transfer';
 
 
 type ActionConfirmationPopUpProps = {
@@ -15,10 +16,42 @@ type ActionConfirmationPopUpProps = {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setAcceptAction: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessedArguments: React.Dispatch<React.SetStateAction<any>>;
+  txData: any;
 }
 
-const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments}: ActionConfirmationPopUpProps) => {
+const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, txData}: ActionConfirmationPopUpProps) => {
   const hasToolCall = 'tool_calls' in response;
+  const [isTransfer, setIsTransfer] = useState<boolean>(false);
+  const [type, setType] = useState<string>("");
+
+  const [txCard, setTxCard] = useState<any>(null);
+  useEffect(() => {
+    try{
+      if(!hasToolCall){return;}
+      const args = processArguments(response.tool_calls[0]);
+      if(args.function === "transfer_tokens"){
+        console.log("TxData:");
+        console.log(txData);
+        if(txData.receiverName && txData.receiverWalletAddress && txData.transferToken && txData.transferAmount){
+          console.log("Is Transfer")
+          setIsTransfer(true);
+          return;
+        }
+      }
+      
+      
+      else{
+        alert("Unknown Function")
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }, [isOpen]);
+
+  useEffect(()=>{
+    console.log("Printing the txData");
+    console.log(txData);
+  }, [txData])
 
   const customStyles = {
     overlay: {
@@ -51,6 +84,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
     setProcessedArguments(args);
     setIsOpen(false);
   }
+  //receiverName, receiverWalletAddress, transferToken, transferAmount
 
   return (
     <div className="gap-4 flex-col ">
@@ -68,7 +102,7 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                 <SlQuestion size={120} />
                 <h1 className="text-2xl font-semibold bg-v2-text-gradient bg-clip-text text-transparent">Confirm Transaction</h1>
               </div>
-              <div className="flex flex-col w-full h-full p-3">
+              {/*<div className="flex flex-col w-full h-full p-3">
                     <h1 className="text-xl">Please ensure the following fields are accurate before proceeding:</h1>
                     <div className="flex w-full h-full overflow-auto border-[#94a3b8] border mt-3 mb-6">
                       <SyntaxHighlighter 
@@ -85,7 +119,8 @@ const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, 
                         {JSON.stringify(processArguments(response.tool_calls[0]), null, 2)}
                       </SyntaxHighlighter>
                     </div>
-                </div>
+              </div>*/}
+              {isTransfer? <TransferCard receiverName={txData.receiverName} receiverWalletAddress={txData.receiverWalletAddress} transferToken={txData.transferToken} transferAmount={txData.transferAmount}/> : ""}
               <div className="flex w-full justify-around items-center">
                 <div className="flex justify-center items-center w-20 h-8 bg-red-500 rounded-full" onClick={handleClosePopUp}>
                   <h1>Reject</h1>

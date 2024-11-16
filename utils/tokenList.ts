@@ -1,6 +1,17 @@
 export const tokenList = [
     {
       "chainId": 137,
+      "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+      "name": "Wrapped Ether",
+      "decimals": 18,
+      "symbol": "WETH",
+      "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+      "tags": [
+        "tokens"
+      ]
+    },
+    {
+      "chainId": 137,
       "address": "0x255707b70bf90aa112006e1b07b9aea6de021424",
       "name": "TETU Reward Token",
       "decimals": 18,
@@ -885,17 +896,6 @@ export const tokenList = [
       "decimals": 18,
       "symbol": "DMT",
       "logoURI": "https://tokens.1inch.io/0xd28449bb9bb659725accad52947677cce3719fd7.png",
-      "tags": [
-        "tokens"
-      ]
-    },
-    {
-      "chainId": 137,
-      "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-      "name": "Wrapped Ether",
-      "decimals": 18,
-      "symbol": "WETH",
-      "logoURI": "https://tokens.1inch.io/0x7ceb23fd6bc0add59e62ac25578270cff1b9f619.png",
       "tags": [
         "tokens"
       ]
