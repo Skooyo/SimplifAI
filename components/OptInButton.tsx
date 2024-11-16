@@ -6,8 +6,13 @@ import { useWalletClient, useAccountEffect, useAccount } from 'wagmi';
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import checkSubscription from "@/utils/checkSubscription";
 import { IoMdNotifications, IoMdNotificationsOff } from "react-icons/io";
+//import dotenv from "dotenv";
+
+// Load environment variables from .env file
+//dotenv.config();
 
 const OptInButton = () => {
+  const SIMPLIFAI_CHANNEL_ADDRESS = process.env.NEXT_PUBLIC_SIMPLIFAI_CHANNEL_ADDRESS;
   const {data:signer} = useWalletClient();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
@@ -22,6 +27,12 @@ const OptInButton = () => {
       setIsSubscribed(hasChannel);
     }
   }
+
+  
+  if (!SIMPLIFAI_CHANNEL_ADDRESS) {
+    throw new Error("SIMPLIFAI_CHANNEL_ADDRESS environment variable is not defined");
+  }
+
 
   // useEffect(()=>{
   //   console.log("i am in opt-button")
@@ -51,7 +62,7 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptInResponse = await user.notification.subscribe(
-      "eip155:11155111:0xFD008e19B64E4786e6F4D0C16f161f67554B0Bd7"
+      `eip155:11155111:${SIMPLIFAI_CHANNEL_ADDRESS}`
     );
     console.log("OptInResponse", OptInResponse);
     if ('status' in OptInResponse &&OptInResponse.status === 204) {
@@ -64,7 +75,7 @@ const OptInButton = () => {
       env: CONSTANTS.ENV.STAGING,
     });
     const OptOutResponse = await user.notification.unsubscribe(
-      "eip155:11155111:0xFD008e19B64E4786e6F4D0C16f161f67554B0Bd7"
+      `eip155:11155111:${SIMPLIFAI_CHANNEL_ADDRESS}`
     );
     console.log("OptOutResponse", OptOutResponse);
     if ('status' in OptOutResponse && OptOutResponse.status === 204) {
