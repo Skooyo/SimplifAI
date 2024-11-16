@@ -5,9 +5,9 @@ import { useState } from "react";
 import processArguments from "@/utils/processArguments";
 import { FiAlertTriangle } from "react-icons/fi";
 import { SlQuestion } from "react-icons/sl";
-import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { Rings, Audio, BallTriangle, Bars, Circles, Grid, Hearts, Oval, Puff, SpinningCircles, TailSpin, ThreeDots } from 'react-loading-icons';
+import { darcula } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+import { BallTriangle } from 'react-loading-icons';
 
 type ActionConfirmationPopUpProps = {
   response: any,

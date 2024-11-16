@@ -19,6 +19,7 @@ export default function Home() {
     }
   }, [primaryWallet]);
 
+
   return (
     <>
       <div className="w-full h-screen flex-col flex items-center gap-4">
