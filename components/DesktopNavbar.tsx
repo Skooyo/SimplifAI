@@ -51,7 +51,7 @@ const DesktopNavbar = () => {
   return (
     <div className="fixed top-0 left-0 z-50 w-full transition-all duration-500 max-lg:py-4 py-2 bg-black bg-opacity-50 backdrop-blur-[8px] flex justify-between items-center px-20">
       <div className="flex justify-center items-center">
-        <img src="/images/xora.svg" width={160} height={55} alt="logo" />
+        <img src="logo-light.png" width={160} height={55} alt="logo" />
         <div>
           <IoIosNotificationsOutline
             className="opacity-0 pointer-events-none"
@@ -103,7 +103,7 @@ const DesktopNavbar = () => {
       </ul>
       <div className="flex justify-center items-center">
         <img
-          src="/images/xora.svg"
+          src="logo-light.png"
           width={160}
           height={55}
           alt="logo"
