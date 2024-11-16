@@ -48,8 +48,8 @@ export default function RootLayout({
                 </div>
                 <Header />
               </div>
-              <div className="my-32">{children}</div>
-              <div className="md:hidden">
+              <div className="my-32 z-[-2]">{children}</div>
+              <div className="md:hidden z-[-1]">
                 <NavBar />
               </div>
             </div>
