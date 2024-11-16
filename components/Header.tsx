@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <>
       <div className="w-full h-full flex-col flex items-center gap-4">
-        <div className="w-full h-[80%] bg-red-500">
+        <div className="w-full h-[80%]">
           <Image
             src="/firewatch-gradient-slim.png"
             alt="header-img"
@@ -36,7 +36,7 @@ const Header = () => {
           />
         </div>{" "}
         {/* BG Image Placeholder */}
-        <div className="w-1/3 md:w-1/12 bg-blue-500 -mt-24 mb-6 rounded-full aspect-square relative overflow-hidden p-20">
+        <div className="w-1/3 md:w-1/12 -mt-24 mb-6 rounded-full aspect-square relative overflow-hidden p-20">
           <Image
             src={`https://api.cloudnouns.com/v1/pfp?text=${primaryWallet?.address}`}
             fill

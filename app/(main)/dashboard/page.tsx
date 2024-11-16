@@ -7,13 +7,13 @@ import { useState, useEffect } from "react";
 import ActionConfirmationPopUp from "@/components/ActionConfirmationPopUp";
 import ActionErrorPopUp from "@/components/ActionErrorPopUp";
 import { getContactByOwner } from "@/lib/db_actions/contact-actions";
-import { useAccount, useChainId, useReadContract } from 'wagmi';
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { config } from "@/utils/config";
 import processArguments from "@/utils/processArguments";
 import { set } from "mongoose";
-import {USDC, WETH} from "@/utils/defaultToken";
+import { USDC, WETH } from "@/utils/defaultToken";
 import { ETH_CHAIN_ID } from "@pushprotocol/restapi/src/lib/config";
-import { tokenList} from "@/utils/tokenList";
+import { tokenList } from "@/utils/tokenList";
 import { setNextBlockBaseFeePerGas } from "viem/actions";
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
   const [parsedResponse, setParsedResponse] = useState<any>({});
   const [connectedWallet, setConnectedWallet] = useState<any>();
   const [showNotification, setShowNotification] = useState(false);
-  const [isProcessing, setIsProcessing]= useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Modal states
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function Home() {
 
   // User states
   const [user, setUser] = useState<any>();
-  const account = useAccount({config});
+  const account = useAccount({ config });
   const chainId = useChainId();
 
   // Transaction states
@@ -59,24 +59,27 @@ export default function Home() {
     }
   }, [parsedResponse]);
 
-  async function initializeError(message: string){
-    console.log("Opening Error Pop Up")
+  async function initializeError(message: string) {
+    console.log("Opening Error Pop Up");
     setErrorMessage(message);
     setIsErrorOpen(true);
   }
 
-  async function openConfirmation(parsedResponse:any){
+  async function openConfirmation(parsedResponse: any) {
     console.log("Processing Confirmation");
-    const hasToolCall = 'tool_calls' in parsedResponse;
-    if(!hasToolCall){
-      initializeError("Invalid Prompt");return;
+    const hasToolCall = "tool_calls" in parsedResponse;
+    if (!hasToolCall) {
+      initializeError("Invalid Prompt");
+      return;
     }
-    if(!account.address){
-      initializeError("You Are Not Logged In");return;
+    if (!account.address) {
+      initializeError("You Are Not Logged In");
+      return;
     }
     const user = await getContactByOwner(account.address as string);
-    if(!user){
-      initializeError("Your User Account Was Not Found");return;
+    if (!user) {
+      initializeError("Your User Account Was Not Found");
+      return;
     }
     setUser(user);
     console.log(user);
@@ -84,7 +87,7 @@ export default function Home() {
     const args = processArguments(parsedResponse.tool_calls[0]);
     setProcessedArguments(args);
 
-    try{
+    try {
       // Check is Function Processing
       if (args.function === "transfer_tokens") {
         checkTransfer(args, user);
@@ -96,7 +99,7 @@ export default function Home() {
         initializeError("Invalid Prompt");
         return;
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
       initializeError("Unknown Error Occured");
       return;
@@ -111,17 +114,25 @@ export default function Home() {
     }
   }, [acceptAction]);
 
-  async function checkTransfer(args:any, user:any){
+  async function checkTransfer(args: any, user: any) {
     // Check Arguments
-    const { specifiedToken, specifiedAmount, transferTo } = args.arguments as any;
-    if(!specifiedToken || !specifiedAmount || !transferTo){
-      initializeError("Invalid Prompt"); return;
+    const { specifiedToken, specifiedAmount, transferTo } =
+      args.arguments as any;
+    if (!specifiedToken || !specifiedAmount || !transferTo) {
+      initializeError("Invalid Prompt");
+      return;
     }
     // Search User Address in the database
-    user.contacts.forEach((item:any) => {console.log(item);console.log(item.name);});
-    const transferedUser = user.contacts.find((item:any) => item.name.toLowerCase() === transferTo.toLowerCase());
-    if(!transferedUser){
-      initializeError("User Not Found");return;
+    user.contacts.forEach((item: any) => {
+      console.log(item);
+      console.log(item.name);
+    });
+    const transferedUser = user.contacts.find(
+      (item: any) => item.name.toLowerCase() === transferTo.toLowerCase()
+    );
+    if (!transferedUser) {
+      initializeError("User Not Found");
+      return;
     }
     setTransferedUser(transferedUser);
     setTransferedName(transferTo);
@@ -130,13 +141,14 @@ export default function Home() {
     // Search on tokenList for the token information
     let token;
     if (specifiedToken === USDC.symbol) {
-      token= USDC;
+      token = USDC;
       setTokenInformation(USDC);
-    }else if (specifiedToken === "ETH"){
-      token= WETH;
+    } else if (specifiedToken === "ETH") {
+      token = WETH;
       setTokenInformation(WETH);
-    }else{
-      initializeError("Token Not Found");return;
+    } else {
+      initializeError("Token Not Found");
+      return;
     }
     // Open Confirmation
     setTxData({
@@ -145,53 +157,69 @@ export default function Home() {
       transferToken: token,
       transferAmount: specifiedAmount,
     });
-    console.log("IT's updated motherfucker")
+    console.log("IT's updated motherfucker");
     setIsOpen(true);
   }
 
-  async function checkSwap(args:any){
+  async function checkSwap(args: any) {
     // Check Arguments
-    const { tokenToBuy, tokenToSell, specifiedAmount, specifiedToken } = args.arguments as any;
-    if(!tokenToBuy || !tokenToSell || !specifiedAmount || !specifiedToken){
-      initializeError("Invalid Prompt");return;
+    const { tokenToBuy, tokenToSell, specifiedAmount, specifiedToken } =
+      args.arguments as any;
+    if (!tokenToBuy || !tokenToSell || !specifiedAmount || !specifiedToken) {
+      initializeError("Invalid Prompt");
+      return;
     }
     // Search Information of Token1 and Token2
     // Specified Token with the amount
-    if(specifiedToken === USDC.symbol){ setTokenInformation(USDC);}
-    else if(specifiedToken === "ETH"){setTokenInformation(WETH);}
+    if (specifiedToken === USDC.symbol) {
+      setTokenInformation(USDC);
+    } else if (specifiedToken === "ETH") {
+      setTokenInformation(WETH);
+    }
     setAmount(specifiedAmount);
     // Token to Buy and Token to Sell
-    if(tokenToBuy === USDC.symbol){setTokenToBuy(USDC);}
-    else if (tokenToBuy === "ETH"){setTokenToBuy(WETH);}
-    if(tokenToSell === USDC.symbol){setTokenToSell(USDC);}
-    else if (tokenToSell === "ETH"){setTokenToSell(WETH);}
+    if (tokenToBuy === USDC.symbol) {
+      setTokenToBuy(USDC);
+    } else if (tokenToBuy === "ETH") {
+      setTokenToBuy(WETH);
+    }
+    if (tokenToSell === USDC.symbol) {
+      setTokenToSell(USDC);
+    } else if (tokenToSell === "ETH") {
+      setTokenToSell(WETH);
+    }
     // Final Check
-    if (tokenToBuy === tokenToSell){initializeError("Invalid Swap");return;}
-    if(!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken){initializeError("Invalid Swap");return;}
+    if (tokenToBuy === tokenToSell) {
+      initializeError("Invalid Swap");
+      return;
+    }
+    if (!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken) {
+      initializeError("Invalid Swap");
+      return;
+    }
     setIsOpen(true);
   }
 
-  async function checkAISetting(args:any){
+  async function checkAISetting(args: any) {
     // Check Arguments
     const {} = args.arguments as any;
 
     setIsOpen(true);
   }
 
-  async function executeTx(args:any){
+  async function executeTx(args: any) {
     try {
-      if(processedArguments.function === "transfer_tokens" ){
+      if (processedArguments.function === "transfer_tokens") {
         console.log("Executing Transfer");
-        if (!txData){
+        if (!txData) {
           alert("Unknown Error Occured");
         }
         console.log(txData);
-        if(txData.transferToken.symbol === "WETH"){
+        if (txData.transferToken.symbol === "WETH") {
           console.log("Transfering Native Token");
-        }else{
+        } else {
           console.log("Transferring ERC-20 Token");
         }
-
 
         // const tx = await account.executeTransaction({
         //   to: txData.transferToken.address,
@@ -200,7 +228,7 @@ export default function Home() {
         // });
         // console.log(tx);
       }
-      
+
       setErrorMessage("");
       alert("Executing Transaction");
     } catch (error) {
@@ -227,20 +255,26 @@ export default function Home() {
               )}
             </div>
 
-          <ActionErrorPopUp message={errorMessage} isOpen={isErrorOpen} setIsOpen={setIsErrorOpen} />
-          <ActionConfirmationPopUp
+            <ActionErrorPopUp
+              message={errorMessage}
+              isOpen={isErrorOpen}
+              setIsOpen={setIsErrorOpen}
+            />
+            <ActionConfirmationPopUp
               response={parsedResponse}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               setAcceptAction={setAcceptAction}
               setProcessedArguments={setProcessedArguments}
               txData={txData}
-          />
+            />
           </div>
         </div>
       ) : (
-        <div className="flex text-xl mt-24 font-semibold w-full justify-center items-center">
-          <p>Please connect your wallet to use our features.</p>
+        <div className="flex text-xl mt-24 font-semibold justify-center text-center w-full items-center">
+          <p className="w-2/3">
+            Please connect your wallet to use our features.
+          </p>
         </div>
       )}
     </>
