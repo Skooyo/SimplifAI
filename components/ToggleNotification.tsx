@@ -14,10 +14,10 @@ const ToggleNotification = ({
   const { data: signer } = useWalletClient();
 
   const handleCheckSubscription = async () => {
-    console.log("inside handle checking subscription");
-    console.log(connectedWallet);
+    // console.log("inside handle checking subscription");
+    // console.log(connectedWallet);
     if (connectedWallet) {
-      console.log("user with wallet checking subscription status");
+      // console.log("user with wallet checking subscription status");
       const hasChannel = await checkSubscription(connectedWallet);
       setIsSubscribed(hasChannel);
       setLoading(false);
