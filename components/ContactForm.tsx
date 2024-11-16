@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/landing-components/Button";
 import Modal from "react-modal";
 import {
   Form,
@@ -31,8 +31,13 @@ type ModalProps = {
   setPageUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ContactForm = ({userWalletAddress, isOpen, setIsOpen, pageUpdate, setPageUpdate}: ModalProps) => {
-
+const ContactForm = ({
+  userWalletAddress,
+  isOpen,
+  setIsOpen,
+  pageUpdate,
+  setPageUpdate,
+}: ModalProps) => {
   const router = useRouter();
 
   const form = useForm({
@@ -49,7 +54,7 @@ const ContactForm = ({userWalletAddress, isOpen, setIsOpen, pageUpdate, setPageU
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>): Promise<void> {
-    console.log(values)
+    console.log(values);
     createContact(userWalletAddress, values.name, values.walletAddress); // Create a new contact
     setPageUpdate(!pageUpdate); // Update the page to reflect the changes
     handleCloseModal(); // Close the modal after submission
@@ -85,60 +90,58 @@ const ContactForm = ({userWalletAddress, isOpen, setIsOpen, pageUpdate, setPageU
       style={customStyles}
       ariaHideApp={false}
     >
-      <div className="w-full p-4 px-8 min-h-fit bg-gray-700 flex flex-col gap-6 text-white rounded-2xl pb-10">
+      <div className="w-full p-4 px-8 min-h-fit card-gradient flex flex-col gap-6 text-white rounded-2xl pb-10">
         <div className="items-center justify-center flex">
-          <p className="font-semibold text-2xl mt-4">Add a new contact</p>
+          <p className="font-semibold text-2xl mt-4 mb-6">Add New Contact</p>
         </div>
         <Form {...form}>
-            <form
+          <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="bg-gray-700 h-full flex flex-col gap-5"
-            >
-             
+            className="bg-transparent h-full flex flex-col gap-7"
+          >
             <FormField
               control={form.control}
               name="name"
               render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel className={fieldState.invalid ? "text-red-500" : ""}>Name:</FormLabel>
-                <FormControl>
-                <Input
-                  {...field}
-                  className="border-black rounded-xl text-white bg-gray-800"
-                  placeholder="Enter Name"
-                />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="rounded-xl text-white bg-transparent border-l-0 border-r-0 border-t-0 border-b-1 border-[#6e6e6e] outline-none small-1"
+                      placeholder="Enter Name"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
               )}
             />
-             
+
             <FormField
               control={form.control}
               name="walletAddress"
               render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel className={fieldState.invalid ? "text-red-500" : ""}>Wallet Address:</FormLabel>
-                <FormControl>
-                <Input
-                  {...field}
-                  className="border-black rounded-xl text-white bg-gray-800"
-                  placeholder="Enter wallet address"
-                />
-                </FormControl>
-                <FormMessage className="text-red-500" />
-              </FormItem>
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="rounded-xl text-white bg-transparent border-l-0 border-r-0 border-t-0 border-b-1 border-[#6e6e6e] small-1"
+                      placeholder="Enter wallet address"
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500" />
+                </FormItem>
               )}
             />
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              className="mt-12 text-black font-semibold px-16 w-full text-lg bg-green-400 bg-opacity-80 rounded-full drop-shadow-xl"
-            >
-              Add new contact
-            </Button>
-            </form>
+            <div className="flex justify-center items-center w-full mt-5 scale-125">
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="scale-110 mt-6 text-black w-fit bg-v2-text-gradient rounded-[10px] drop-shadow-xl py-2 px-3 text-sm font-semibold leading-none"
+              >
+                Save
+              </button>
+            </div>
+          </form>
         </Form>
       </div>
     </Modal>

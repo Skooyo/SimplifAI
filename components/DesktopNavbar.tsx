@@ -29,17 +29,6 @@ const DesktopNavbar = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef(null);
 
-  const fetchNotifications = async () => {
-    if (signer) {
-      const response = await getLatestNotifications(signer);
-      setNotifications(response || []);
-    } else {
-      console.log("No signer found");
-    }
-    setLoading(false);
-    setShowNotifications(true);
-  };
-
   const handleClickOutside = (event: any) => {
     if (
       notificationRef.current &&
