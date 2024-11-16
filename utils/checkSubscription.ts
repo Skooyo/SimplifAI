@@ -1,6 +1,5 @@
 import { CONSTANTS, PushAPI } from "@pushprotocol/restapi";
 
-// const jarvisChannelAdr = "0xFD008e19B64E4786e6F4D0C16f161f67554B0Bd7"
 const simplifaiChannelAdr = "0x0F5b198b1D400b1386bDe13ec72D7D2e5278fE87"
 
 const checkSubscription = async (address: string) => {
