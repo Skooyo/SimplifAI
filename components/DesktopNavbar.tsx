@@ -3,10 +3,24 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import NotificationWidget from "./NotificationWidget";
 
 const DesktopNavbar = () => {
   const pathname = usePathname();
+
+  const { primaryWallet } = useDynamicContext();
+  const [walletAddress, setWalletAddress] = useState("");
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    if (primaryWallet && !walletAddress) {
+      setConnected(true);
+      setWalletAddress(primaryWallet.address);
+    }
+  }, [primaryWallet]);
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full transition-all duration-500 max-lg:py-4 py-2 bg-black bg-opacity-50 backdrop-blur-[8px] flex justify-between items-center px-20">
@@ -60,7 +74,25 @@ const DesktopNavbar = () => {
           className="opacity-0 pointer-events-none"
         />
         <div className="cursor-pointer">
-          <IoIosNotificationsOutline size={30} />
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger className="trigger-class">
+              <IoIosNotificationsOutline size={30} />
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content className="content-class">
+              <DropdownMenu.Item className="item-class">
+                <NotificationWidget
+                  connectedWallet={walletAddress}
+                  loadNotifs={true}
+                />
+              </DropdownMenu.Item>
+              {/* <DropdownMenu.Item className="item-class">
+                Item 2
+              </DropdownMenu.Item>
+              <DropdownMenu.Item className="item-class">
+                Item 3
+              </DropdownMenu.Item> */}
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </div>
       </div>
     </div>
