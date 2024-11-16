@@ -1,11 +1,12 @@
 "use client";
 
 import useMobileSTT from "@/utils/useMobileSTT";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaMicrophone } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { RiSendPlaneFill } from "react-icons/ri";
 import parseTranscript from "@/utils/parseTranscript";
+import { CgSpinner } from "react-icons/cg";
 
 interface MobileRecordButtonProps {
   setParsedResponse: (response: any) => void;
@@ -20,6 +21,9 @@ const MobileRecordButton = ({ setParsedResponse }: MobileRecordButtonProps) => {
     setTranscript,
   } = useMobileSTT();
 
+
+  const [submitting, setSubmitting] = useState(false);
+
   const handleClick = () => {
     if (!recording) {
       startRecording();
@@ -28,7 +32,8 @@ const MobileRecordButton = ({ setParsedResponse }: MobileRecordButtonProps) => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setSubmitting(true)
     const prompt = transcript;
     setTranscript("");
 
@@ -40,10 +45,11 @@ const MobileRecordButton = ({ setParsedResponse }: MobileRecordButtonProps) => {
       setParsedResponse(response);
     };
     if (prompt && prompt.length > 0) {
-      analyseTranscript();
+      await analyseTranscript();
     } else {
       console.log("No prompt to analyse");
     }
+    setSubmitting(false)
   };
 
   return (
@@ -62,9 +68,10 @@ const MobileRecordButton = ({ setParsedResponse }: MobileRecordButtonProps) => {
         </div>
         <button
           onClick={handleSubmit}
-          className="border border-s4/25 bg-s1/5 hover:border-s4 transition-all duration-300 p-3 mr-4 rounded-full text-white font-bold"
+          className={` ${submitting ? "animate-spin" : ""}
+            border border-s4/25 bg-s1/5 hover:border-s4 transition-all duration-300 p-3 mr-4 rounded-full text-white font-bold`}
         >
-          <RiSendPlaneFill size={24} />
+          { submitting ? <CgSpinner size={24} /> : <RiSendPlaneFill size={24} />}
         </button>
       </div>
       <button

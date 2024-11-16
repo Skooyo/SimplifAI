@@ -131,7 +131,7 @@ export default function Home() {
           </div>
         )}
         {/* Balance and other information */}
-        {finished && !loading && (
+        {finished && !loading && portfolioFetched && (
           <div className="flex flex-col w-full h-fit items-center justify-center gap-4 md:mt-8">
             <p className="w-fit font-semibold text-4xl">${userBal}</p>
             <div className="flex h-fit w-fit items-center justify-center gap-4">
@@ -164,7 +164,7 @@ export default function Home() {
 
         {/* Mock ethereum portfolio */}
         {portfolio.length == 0 && !loading && finished && (
-          <PortfolioCard portfolio={mockEthData} />
+          <PortfolioCard portfolio={mockEthData}/>
         )}
 
         {/* Actual portfolio */}

@@ -37,12 +37,12 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className="ml-20 left-[calc(50%-100px)] top-[160px] absolute pointer-events-none hero-img_res flex-grow z-[2]">
+            <div className="ml-20 left-[calc(50%-100px)] scale-125 top-[120px] absolute pointer-events-none hero-img_res flex-grow z-[2]">
               <Image
-                width={256}
-                height={256}
-                src="/phone.png"
-                className="w-[650px] max-lg:h-auto hidden md:block"
+                width={1920}
+                height={1920}
+                src="/mobile-hero2.png"
+                className="w-[1500px] max-lg:h-auto hidden md:block"
                 alt="phone"
               />
             </div>

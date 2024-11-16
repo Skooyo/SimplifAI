@@ -3,6 +3,7 @@
 import { connectToDatabase } from "../database";
 import { handleError } from "../utils";
 import Users from "../database/models/user.model";
+import { addOrdertoOrderBookParams } from "@/types";
 
 export const getUserByUserID = async (userID: string) => {
     try{
@@ -44,6 +45,28 @@ export const createUser = async(userID: string) => {
         return JSON.parse(JSON.stringify(user));
     } catch (error) {
         console.error("Error creating user:", error);
+        handleError(error);
+    }
+}
+
+export const addOrdertoOrderBook = async({userID, newOrder}: addOrdertoOrderBookParams) => {
+    try {
+        await connectToDatabase();
+
+        const user = await Users.findOne({ userID: userID });
+
+        const updatedUser = await Users.findByIdAndUpdate(user._id, {
+            $push : {orderBook: newOrder}
+        },
+        {
+            new: true
+        });
+
+        if (updatedUser) {
+            console.log("Order added added")
+            return JSON.parse(JSON.stringify(updatedUser));
+        }
+    } catch (error) {
         handleError(error);
     }
 }

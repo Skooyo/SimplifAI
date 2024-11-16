@@ -6,8 +6,10 @@ interface SendMessageParams {
   message: string;
 }
 
+// Push protocol API to send messages AND notify users of the new messages (utilizing both Push Chat and Push Notifications)
+
 const sendMessage = async ({ receiverAdr, message }: SendMessageParams) => {
-  const SIMPLIFAI_CHANNEL_PRIVATE_KEY = process.env.SIMPLIFAI_CHANNEL_PRIVATE_KEY;
+  const SIMPLIFAI_CHANNEL_PRIVATE_KEY = process.env.NEXT_PUBLIC_SIMPLIFAI_CHANNEL_PRIVATE_KEY;
   if (!SIMPLIFAI_CHANNEL_PRIVATE_KEY) {
     throw new Error("SIMPLIFAI_CHANNEL_PRIVATE_KEY environment variable is not defined");
   }
