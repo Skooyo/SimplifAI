@@ -71,8 +71,8 @@ const HowToUse = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center justify-between w-full mt-20">
-                <div className="flex flex-col w-full md:w-2/5 gap-4">
+              <div className="flex items-center justify-between w-full mt-20 md:-mt-[200px]">
+                <div className="flex flex-col w-full md:w-2/5 gap-4 flex-shrink-0">
                   <h1 className="h4 text-p4 max-md:h5">Confirm and Go</h1>
                   <p className="body-3 text-gray-400">
                     You stay in control. Review the transaction, approve, and
@@ -80,11 +80,11 @@ const HowToUse = () => {
                   </p>
                 </div>
                 <Image
-                  src="/phala.png"
-                  width={256}
-                  height={256}
+                  src="/mobile-confirm.png"
+                  width={1920}
+                  height={1920}
                   alt="phone"
-                  className="hidden"
+                  className="max-md:hidden -ml-[300px]"
                 />
               </div>
             </div>
