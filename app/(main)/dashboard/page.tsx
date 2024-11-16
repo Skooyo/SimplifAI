@@ -198,7 +198,7 @@ export default function Home() {
         //   data: txData.transferToken.contract.methods.transfer(txData.receiverWalletAddress, txData.transferAmount).encodeABI(),
         //   value: 0,
         // });
-        console.log(tx);
+        // console.log(tx);
       }
       
       setErrorMessage("");

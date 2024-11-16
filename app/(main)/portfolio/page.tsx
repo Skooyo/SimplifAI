@@ -164,7 +164,7 @@ export default function Home() {
 
         {/* Mock ethereum portfolio */}
         {portfolio.length == 0 && !loading && finished && (
-          <PortfolioCard portfolio={mockEthData} />
+          <PortfolioCard portfolio={mockEthData}/>
         )}
 
         {/* Actual portfolio */}
