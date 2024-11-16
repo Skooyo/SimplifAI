@@ -112,20 +112,6 @@ const DesktopNavbar = () => {
         />
         <div className="relative cursor-pointer" ref={notificationRef}>
           {connected && (
-            // <>
-            // <div onClick={fetchNotifications}>
-            //   <IoIosNotificationsOutline size={30} />
-            // </div>
-            //   {showNotifications && notifications && !loading && (
-            //     <div className="absolute top-12 w-[500px] -right-24">
-            //       {notifications.map((notification, index) => (
-            //         <div key={index} className="w-11/12  mt-2 mb-2 ">
-            //           <NotificationCard notification={notification} />
-            //         </div>
-            //       ))}
-            //     </div>
-            //   )}
-            // </>
             <div className="">
               <NotificationWidget
                 connectedWallet={walletAddress}
