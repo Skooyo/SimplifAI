@@ -9,12 +9,22 @@ import TransferCard from '@/components/confirmation-components/Transfer';
 import Button from '@/components/landing-components/Button';
 import RedButton from '@/components/landing-components/RedButton';
 import SwapCard from "@/components/confirmation-components/Swap";
+import AI from "@/components/confirmation-components/AI";
 
 const swapDummyData = {
   tokenSwapFrom: {logoURI: "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png", symbol: "WETH"},
   tokenSwapTo: {logoURI: "https://cryptologos.cc/logos/usd-coin-usdc-logo.svg?v=035", symbol: "USDC"},
   tokenSwapFromAmount: 10
-}
+};
+
+const aiDummyData = {
+  tradeMin: 100,
+  tradeMax: 200,
+  orderType: "BUY",
+  quantity: 0.001,
+  transactionCount: 3,
+  lastTimeStampSinceTransaction: new Date()
+};
 
 
 type ActionConfirmationPopUpProps = {
@@ -37,6 +47,7 @@ const ActionConfirmationPopUp = ({
   const hasToolCall = "tool_calls" in response;
   const [isTransfer, setIsTransfer] = useState<boolean>(false);
   const [isSwap, setIsSwap] = useState<boolean>(false);
+  const [isAI, setIsAI] = useState<boolean>(false);
   const [type, setType] = useState<string>("");
 
   const [txCard, setTxCard] = useState<any>(null);
@@ -121,6 +132,38 @@ const ActionConfirmationPopUp = ({
                 Confirm Transaction
               </h1>
             </div>
+            <div className="flex w-full justify-around">
+              <button
+                onClick={() => {
+                  setType("transfer");
+                  setIsTransfer(true);
+                  setIsSwap(false);
+                  setIsAI(false);
+                }}
+              >
+                Transfer
+              </button>
+              <button
+                onClick={() => {
+                  setType("swap");
+                  setIsTransfer(false);
+                  setIsSwap(true);
+                  setIsAI(false);
+                }}
+              >
+                Swap
+              </button>
+              <button
+                onClick={() => {
+                  setType("ai");
+                  setIsTransfer(false);
+                  setIsSwap(false);
+                  setIsAI(true);
+                }}
+              >
+                AI
+              </button>
+            </div>
             <div className="w-full ">
               {isTransfer ? (
                 <TransferCard
@@ -135,7 +178,18 @@ const ActionConfirmationPopUp = ({
                   tokenSwapTo={swapDummyData.tokenSwapTo}
                   tokenSwapFromAmount={swapDummyData.tokenSwapFromAmount}
                 />
-              ) : ("Unknown Type")}
+              ) : isAI ? (
+                <AI 
+                  tradeMin={aiDummyData.tradeMin} 
+                  tradeMax={aiDummyData.tradeMax}
+                  orderType={aiDummyData.orderType}
+                  quantity={aiDummyData.quantity}
+                  transactionCount={aiDummyData.transactionCount}
+                  lastTimeStampSinceTransaction={aiDummyData.lastTimeStampSinceTransaction}
+                />
+              ) : (
+                "Unknown Transaction"
+              )}
             </div>
             <div className="flex w-full justify-between items-center mb-10 pl-6 pr-6">
               <RedButton onClick={handleClosePopUp}>

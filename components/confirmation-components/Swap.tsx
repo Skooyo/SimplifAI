@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FaArrowRightArrowLeft } from "react-icons/fa6";
+import { TbArrowsExchange } from "react-icons/tb";
 
 type SwapCardProps = {
     tokenSwapFrom: any;
@@ -23,7 +23,7 @@ const SwapCard = ({tokenSwapFrom, tokenSwapTo, tokenSwapFromAmount} : SwapCardPr
                         />
                     </div>
                     <div className="w-1/3 h-full flex justify-center">
-                        <FaArrowRightArrowLeft size={30} color={"#8c8c8c"}/>
+                        <TbArrowsExchange size={40} color={"#8c8c8c"}/>
                     </div>
                     <div className="w-1/3 h-full">
                         <Image
