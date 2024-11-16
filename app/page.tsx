@@ -7,7 +7,7 @@ import Footer from "@/components/landing-sections/Footer";
 
 export default function Home() {
   return (
-    <main className="overflow-hidden">
+    <main className="overflow-hidden flex flex-col">
       <LandingHeader />
       <Hero />
       <Features />

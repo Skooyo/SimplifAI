@@ -8,7 +8,7 @@ const Features = () => {
   return (
     <section className="z-[2]">
       <Element name="features">
-        <div className="md:mx-20 mx-4 mt-40">
+        <div className="md:mx-20 mx-4 mt-[240px]">
           <div className="pricing-head_before md:mt-0 mt-32 relative  pb-40 pt-28 max-xl:max-w-4xl max-lg:border-none max-md:pb-32 max-md:pt-16">
             <h3 className="h3 max-lg:h4 max-md:h5 z-3 relative mx-auto mb-14 max-w-lg text-center text-p4 max-md:mb-11 max-sm:max-w-sm tracking-wider">
               Powerful Features In{" "}

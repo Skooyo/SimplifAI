@@ -4,7 +4,6 @@ import DesktopRecordButton from "@/components/DesktopRecordButton";
 import MobileRecordButton from "@/components/MobileRecordButton";
 import { useDynamicContext, useIsLoggedIn } from "@dynamic-labs/sdk-react-core";
 import { useState, useEffect } from "react";
-import NotificationList from "@/components/NotificationList";
 import ActionConfirmationPopUp from "@/components/ActionConfirmationPopUp";
 
 export default function Home() {
@@ -61,9 +60,6 @@ export default function Home() {
                 <p>{JSON.stringify(processedArguments, null, 2)}</p>
               )}
             </div>
-            <div className="w-full h-50">
-              <NotificationList />
-            </div>
 
             <ActionConfirmationPopUp
               response={parsedResponse}
@@ -75,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex text-xl font-semibold w-full justify-center items-center">
+        <div className="flex text-xl mt-36 font-semibold w-full justify-center items-center">
           <p>Please connect your wallet to use our features.</p>
         </div>
       )}
