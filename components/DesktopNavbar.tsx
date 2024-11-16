@@ -4,12 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import React, { useEffect, useRef, useState } from "react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import NotificationWidget from "./NotificationWidget";
 import { useWalletClient } from "wagmi";
 import getLatestNotifications from "@/utils/getLatestNotifications";
-import NotificationCard from "./NotificationCard";
 
 const DesktopNavbar = () => {
   const pathname = usePathname();

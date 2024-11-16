@@ -14,11 +14,12 @@ const NotificationWidget = ({
   setShowNotifications?: any;
 }) => {
   const { data: signer } = useWalletClient();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState<any[]>([]);
 
   const fetchNotifications = async () => {
     if (signer) {
+      setLoading(true)
       const response = await getLatestNotifications(signer);
       setNotifications(response || []);
       console.log("fetched");
@@ -43,7 +44,7 @@ const NotificationWidget = ({
               </div>
             ))}
         </div>
-        <div onClick={fetchNotifications}>
+        <div onClick={fetchNotifications} className={loading ? "animate-pulse" : ""}>
           <IoIosNotificationsOutline size={30} />
         </div>
       </div>
