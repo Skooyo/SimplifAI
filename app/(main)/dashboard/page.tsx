@@ -7,17 +7,22 @@ import { useState, useEffect } from "react";
 import ActionConfirmationPopUp from "@/components/ActionConfirmationPopUp";
 import ActionErrorPopUp from "@/components/ActionErrorPopUp";
 import { getContactByOwner } from "@/lib/db_actions/contact-actions";
-import { useAccount, useChainId, useReadContract } from 'wagmi';
+import { useAccount, useChainId, useReadContract } from "wagmi";
 import { config } from "@/utils/config";
 import processArguments from "@/utils/processArguments";
 import { set } from "mongoose";
-import {USDC, WETH} from "@/utils/defaultToken";
+import { USDC, WETH } from "@/utils/defaultToken";
 import { ETH_CHAIN_ID } from "@pushprotocol/restapi/src/lib/config";
-import { tokenList} from "@/utils/tokenList";
+import { tokenList } from "@/utils/tokenList";
 import { setNextBlockBaseFeePerGas } from "viem/actions";
-import { useSendTransaction, useWriteContract, useWaitForTransactionReceipt, type BaseError, } from 'wagmi';
+import {
+  useSendTransaction,
+  useWriteContract,
+  useWaitForTransactionReceipt,
+  type BaseError,
+} from "wagmi";
 import { ERC20ABI } from "@/utils/abi";
-import { getApproval, getSwapTransaction, } from "@/utils/oneinch";
+import { getApproval, getSwapTransaction } from "@/utils/oneinch";
 
 export default function Home() {
   const { primaryWallet } = useDynamicContext();
@@ -34,7 +39,7 @@ export default function Home() {
 
   // User states
   const [user, setUser] = useState<any>();
-  const account = useAccount({config});
+  const account = useAccount({ config });
   const chainId = useChainId();
 
   // Transaction states
@@ -43,35 +48,37 @@ export default function Home() {
   const [isSwapped, setIsSwapped] = useState(false);
   const [isSwapping, setIsSwapping] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
-  
+
   //const { data: hash, isPending,sendTransaction } = useSendTransaction() ;
   const { data: hash, error, isPending, writeContract } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash}) 
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({ hash });
 
-  const { 
+  const {
     data: swapHash,
     error: swapError,
-    isPending: swapIsPending, 
-    sendTransaction 
+    isPending: swapIsPending,
+    sendTransaction,
   } = useSendTransaction();
-  const { isLoading: isSwapConfirming, isSuccess: isSwapConfirmed } = useWaitForTransactionReceipt({ hash: swapHash }); 
+  const { isLoading: isSwapConfirming, isSuccess: isSwapConfirmed } =
+    useWaitForTransactionReceipt({ hash: swapHash });
 
   // Update Status once transaction confirmed
-  useEffect(()=>{
-    console.log("Tx Status Changed")
-    if(swapIsPending == false){
-      if(isApproving){
+  useEffect(() => {
+    // console.log("Tx Status Changed");
+    if (swapIsPending == false) {
+      if (isApproving) {
         setIsApproved(true);
         setIsApproving(false);
         setIsExecuting(false);
       }
-      if(isSwapping){
+      if (isSwapping) {
         setIsApproved(false);
         setIsSwapping(false);
         setIsExecuting(false);
       }
     }
-  }, [swapIsPending]) 
+  }, [swapIsPending]);
 
   useEffect(() => {
     if (Object.keys(parsedResponse).length > 0) {
@@ -79,32 +86,35 @@ export default function Home() {
     }
   }, [parsedResponse]);
 
-  async function initializeError(message: string){
-    console.log("Opening Error Pop Up")
+  async function initializeError(message: string) {
+    // console.log("Opening Error Pop Up");
     setErrorMessage(message);
     setIsErrorOpen(true);
   }
 
-  async function openConfirmation(parsedResponse:any){
-    console.log("Processing Confirmation");
-    const hasToolCall = 'tool_calls' in parsedResponse;
-    if(!hasToolCall){
-      initializeError("Invalid Prompt");return;
+  async function openConfirmation(parsedResponse: any) {
+    // console.log("Processing Confirmation");
+    const hasToolCall = "tool_calls" in parsedResponse;
+    if (!hasToolCall) {
+      initializeError("Invalid Prompt");
+      return;
     }
-    if(!account.address){
-      initializeError("You Are Not Logged In");return;
+    if (!account.address) {
+      initializeError("You Are Not Logged In");
+      return;
     }
     const user = await getContactByOwner(account.address as string);
-    if(!user){
-      initializeError("Your User Account Was Not Found");return;
+    if (!user) {
+      initializeError("Your User Account Was Not Found");
+      return;
     }
     setUser(user);
-    console.log(user);
+    // console.log(user);
 
     const args = processArguments(parsedResponse.tool_calls[0]);
     setProcessedArguments(args);
 
-    try{
+    try {
       // Check is Function Processing
       if (args.function === "transfer_tokens") {
         checkTransfer(args, user);
@@ -116,8 +126,8 @@ export default function Home() {
         initializeError("Invalid Prompt");
         return;
       }
-    }catch(error){
-      console.log(error);
+    } catch (error) {
+      // console.log(error);
       initializeError("Unknown Error Occured");
       return;
     }
@@ -125,130 +135,170 @@ export default function Home() {
 
   useEffect(() => {
     if (acceptAction) {
-      console.log("Accepted action");
+      // console.log("Accepted action");
       const args = processedArguments;
       executeTx(args);
       setAcceptAction(false);
     }
   }, [acceptAction]);
 
-  async function checkTransfer(args:any, user:any){
+  async function checkTransfer(args: any, user: any) {
     // Check Arguments
-    const { specifiedToken, specifiedAmount, transferTo } = args.arguments as any;
-    if(!specifiedToken || !specifiedAmount || !transferTo){
-      initializeError("Invalid Prompt"); return;
+    const { specifiedToken, specifiedAmount, transferTo } =
+      args.arguments as any;
+    if (!specifiedToken || !specifiedAmount || !transferTo) {
+      initializeError("Invalid Prompt");
+      return;
     }
     // Search User Address in the database
-    user.contacts.forEach((item:any) => {console.log(item);console.log(item.name);});
-    const transferedUser = user.contacts.find((item:any) => item.name.toLowerCase() === transferTo.toLowerCase());
-    if(!transferedUser){
-      initializeError("User Not Found");return;
+    user.contacts.forEach((item: any) => {
+      // console.log(item);
+      // console.log(item.name);
+    });
+    const transferedUser = user.contacts.find(
+      (item: any) => item.name.toLowerCase() === transferTo.toLowerCase()
+    );
+    if (!transferedUser) {
+      initializeError("User Not Found");
+      return;
     }
     const txData = {
       receiverName: transferTo,
       receiverWalletAddress: transferedUser.walletAddress,
       transferAmount: specifiedAmount,
-    } as any
+    } as any;
     // Search Information of the Transfered Token
     if (specifiedToken === USDC.symbol) {
-      txData.transferToken = USDC
-    }else if (specifiedToken === "ETH"){
-      txData.transferToken = WETH
-    }else{
-      initializeError("Token Not Found");return;
+      txData.transferToken = USDC;
+    } else if (specifiedToken === "ETH") {
+      txData.transferToken = WETH;
+    } else {
+      initializeError("Token Not Found");
+      return;
     }
     // Open Confirmation
     setTxData(txData);
     setIsOpen(true);
   }
 
-  async function checkSwap(args:any){
+  async function checkSwap(args: any) {
     // Check Arguments
-    const { tokenToBuy, tokenToSell, specifiedAmount, specifiedToken } = args.arguments as any;
-    if(!tokenToBuy || !tokenToSell || !specifiedAmount || !specifiedToken){
-      initializeError("Invalid Prompt");return;
+    const { tokenToBuy, tokenToSell, specifiedAmount, specifiedToken } =
+      args.arguments as any;
+    if (!tokenToBuy || !tokenToSell || !specifiedAmount || !specifiedToken) {
+      initializeError("Invalid Prompt");
+      return;
     }
     const txData = {
       amount: specifiedAmount,
-    } as any
-    
+    } as any;
+
     // Search Information of Token1 and Token2
     // Specified Token with the amount
-    if(specifiedToken === USDC.symbol){ txData.specifiedToken = USDC;}
-    else if(specifiedToken === "ETH"){txData.specifiedToken = WETH;}
+    if (specifiedToken === USDC.symbol) {
+      txData.specifiedToken = USDC;
+    } else if (specifiedToken === "ETH") {
+      txData.specifiedToken = WETH;
+    }
     // Token to Buy and Token to Sell
-    if(tokenToBuy === USDC.symbol){txData.tokenToBuy = USDC;}
-    else if (tokenToBuy === "ETH"){txData.tokenToBuy= WETH;}
-    if(tokenToSell === USDC.symbol){txData.tokenToSell=USDC;}
-    else if (tokenToSell === "ETH"){txData.tokenToSell=WETH;}
+    if (tokenToBuy === USDC.symbol) {
+      txData.tokenToBuy = USDC;
+    } else if (tokenToBuy === "ETH") {
+      txData.tokenToBuy = WETH;
+    }
+    if (tokenToSell === USDC.symbol) {
+      txData.tokenToSell = USDC;
+    } else if (tokenToSell === "ETH") {
+      txData.tokenToSell = WETH;
+    }
     // Final Check
-    if (tokenToBuy === tokenToSell){initializeError("Invalid Swap");return;}
-    if(!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken){initializeError("Invalid Swap");return;}
+    if (tokenToBuy === tokenToSell) {
+      initializeError("Invalid Swap");
+      return;
+    }
+    if (!tokenToBuy === specifiedToken && !tokenToSell === specifiedToken) {
+      initializeError("Invalid Swap");
+      return;
+    }
     // Open Confirmation
     setTxData(txData);
     setIsOpen(true);
   }
 
-  async function checkAISetting(args:any){
+  async function checkAISetting(args: any) {
     // Check Arguments
     const {} = args.arguments as any;
 
     setIsOpen(true);
   }
 
-  async function executeTx(args:any){
-    console.log("Executing Functions")
+  async function executeTx(args: any) {
+    // console.log("Executing Functions");
     setIsExecuting(true);
     try {
-      if(processedArguments.function === "transfer_tokens" ){
-        console.log("Executing Transfer");
-        if (!txData){alert("Unknown Error Occured");return;}
-        console.log(txData);
-        console.log("Transferring ERC-20 Token");
-        const parsedAmount = BigInt(txData.specifiedAmmount * Math.pow(10, txData.transferToken.decimals));
-        console.log("Transfered Amount:", parsedAmount);
-  
+      if (processedArguments.function === "transfer_tokens") {
+        // console.log("Executing Transfer");
+        if (!txData) {
+          alert("Unknown Error Occured");
+          return;
+        }
+        // console.log(txData);
+        // console.log("Transferring ERC-20 Token");
+        const parsedAmount = BigInt(
+          txData.specifiedAmmount * Math.pow(10, txData.transferToken.decimals)
+        );
+        // console.log("Transfered Amount:", parsedAmount);
+
         writeContract({
           address: txData.transferToken.address,
           abi: ERC20ABI,
-          functionName: 'transfer',
+          functionName: "transfer",
           args: [txData.receiverWalletAddress, parsedAmount],
         });
-      }
-      else if(processedArguments.function === "swap_tokens"){
-        console.log("Executing Swap");
-        if(!txData){alert("Unknown Error Occured");return;}
-        console.log(txData);
-        if(isApproved){
-          console.log("Performing the actual swap")
-          const parsedAmount = BigInt(txData.amount * Math.pow(10, txData.tokenToSell.decimals));
+      } else if (processedArguments.function === "swap_tokens") {
+        // console.log("Executing Swap");
+        if (!txData) {
+          alert("Unknown Error Occured");
+          return;
+        }
+        // console.log(txData);
+        if (isApproved) {
+          // console.log("Performing the actual swap");
+          const parsedAmount = BigInt(
+            txData.amount * Math.pow(10, txData.tokenToSell.decimals)
+          );
           const swapParams = {
             src: txData.tokenToSell.address,
             dst: txData.tokenToBuy.address,
-            amount: parsedAmount.toString(), 
-            from: account.address, 
-            slippage: 1, 
-            chainId
-          } as any
+            amount: parsedAmount.toString(),
+            from: account.address,
+            slippage: 1,
+            chainId,
+          } as any;
           const swapTx = await getSwapTransaction(swapParams);
-          console.log("Swap Tx Obtained");
-          console.log(swapTx);
+          // console.log("Swap Tx Obtained");
+          // console.log(swapTx);
           setIsSwapping(true);
           sendTransaction(swapTx.tx);
-        }else{
-          console.log("Requesting for Approval")
-          const approvalTx = await getApproval(txData.tokenToSell.address, txData.amount, chainId, account.address as string, txData.tokenToSell.decimals);
+        } else {
+          // console.log("Requesting for Approval");
+          const approvalTx = await getApproval(
+            txData.tokenToSell.address,
+            txData.amount,
+            chainId,
+            account.address as string,
+            txData.tokenToSell.decimals
+          );
           setIsApproving(true);
           sendTransaction(approvalTx);
         }
-      }
-      else{
+      } else {
         alert("Unknown Error Occured");
       }
       setErrorMessage("");
     } catch (error) {
       alert("Error Happened");
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -257,17 +307,21 @@ export default function Home() {
       {isLoggedIn ? (
         <div className="w-full h-screen flex-col flex items-center gap-4 -mt-8">
           {hash && <div>Transaction Hash: {hash}</div>}
-          {isConfirming && <div>Waiting for confirmation...</div>} 
-          {isConfirmed && <div>Transaction confirmed.</div>} 
+          {isConfirming && <div>Waiting for confirmation...</div>}
+          {isConfirmed && <div>Transaction confirmed.</div>}
           {error && (
-            <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+            <div>
+              Error: {(error as BaseError).shortMessage || error.message}
+            </div>
           )}
-          
+
           {swapHash && <div>Transaction Hash: {swapHash}</div>}
-          {isSwapConfirming && <div>Waiting for confirmation...</div>} 
-          {isSwapConfirmed && <div>Transaction confirmed.</div>} 
+          {isSwapConfirming && <div>Waiting for confirmation...</div>}
+          {isSwapConfirmed && <div>Transaction confirmed.</div>}
           {swapError && (
-            <div>Error: {(error as BaseError).shortMessage || error.message}</div>
+            <div>
+              Error: {(error as BaseError).shortMessage || error?.message}
+            </div>
           )}
           <div className="md:w-1/4">
             <div className="md:hidden w-screen h-50">
@@ -282,8 +336,12 @@ export default function Home() {
               )}
             </div>
 
-          <ActionErrorPopUp message={errorMessage} isOpen={isErrorOpen} setIsOpen={setIsErrorOpen} />
-          <ActionConfirmationPopUp
+            <ActionErrorPopUp
+              message={errorMessage}
+              isOpen={isErrorOpen}
+              setIsOpen={setIsErrorOpen}
+            />
+            <ActionConfirmationPopUp
               response={parsedResponse}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
@@ -291,7 +349,7 @@ export default function Home() {
               setProcessedArguments={setProcessedArguments}
               txData={txData}
               isExecuting={isExecuting}
-          />
+            />
           </div>
         </div>
       ) : (
