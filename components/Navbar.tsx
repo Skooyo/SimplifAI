@@ -23,7 +23,7 @@ export default function NavBar() {
   const pathName = usePathname();
 
   return (
-    <nav className="w-full px-2 py-6 bg-background border-t border-[#c7f284] rounded-full fixed bottom-0 position-sticky z-50">
+    <nav className="w-full px-2 py-6 bg-background border-t border-[#c7f284] rounded-full fixed bottom-0 position-sticky">
       <div className="justify-between mx-auto px-2 gap-2 items-center flex">
         <Link
           href={`${connected ? "dashboard" : "dashboard"}`}

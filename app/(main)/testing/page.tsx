@@ -7,6 +7,7 @@ import { useWalletClient } from "wagmi";
 import NotificationWidget from "@/components/NotificationWidget";
 import MessageButton from "@/components/MessageButton";
 import { Component } from "@/components/LineChart";
+import RetriveNotificationButton from "@/components/RetriveNotificationButton";
 import AddOrderTest from "@/components/AddOrderTest";
 
 export default function Home() {
@@ -104,6 +105,7 @@ export default function Home() {
           <div className="w-full h-fit p-4 flex flex-col gap-8 items-center justify-center">
             <ToggleNotification connectedWallet={walletAddress} />
             <MessageButton connectedWallet={walletAddress} />
+            <RetriveNotificationButton connectedWallet={walletAddress} />
             <AddOrderTest />
             <button onClick={handleClick}>get balance</button>
             <button onClick={handleClick2}>cashout</button>

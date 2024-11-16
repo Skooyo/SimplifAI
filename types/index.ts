@@ -15,11 +15,11 @@ export interface TokenInformation {
 export interface addOrdertoOrderBookParams {
     userID: string;
     newOrder: {
-        tradeMin: number,
-        tradeMax: number,
+        tradeMin: number|null,
+        tradeMax: number|null,
         orderType: string,
-        quantity: number,
+        quantity: number|null,
         transactionCount: number,
-        lastTimeStampSinceTransaction: Date,
+        lastTimeStampSinceTransaction: Date|null,
     }
 }
