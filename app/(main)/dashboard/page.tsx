@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex text-xl mt-24 font-semibold w-full justify-center items-center">
+        <div className="flex text-xl mt-36 font-semibold w-full justify-center items-center">
           <p>Please connect your wallet to use our features.</p>
         </div>
       )}
