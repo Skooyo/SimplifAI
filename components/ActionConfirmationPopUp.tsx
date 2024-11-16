@@ -34,17 +34,11 @@ type ActionConfirmationPopUpProps = {
   setAcceptAction: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessedArguments: React.Dispatch<React.SetStateAction<any>>;
   txData: any;
-};
+  isExecuting: boolean;
+}
 
-const ActionConfirmationPopUp = ({
-  response,
-  isOpen,
-  setIsOpen,
-  setAcceptAction,
-  setProcessedArguments,
-  txData,
-}: ActionConfirmationPopUpProps) => {
-  const hasToolCall = "tool_calls" in response;
+const ActionConfirmationPopUp = ({response, isOpen, setIsOpen, setAcceptAction, setProcessedArguments, txData, isExecuting}: ActionConfirmationPopUpProps) => {
+  const hasToolCall = 'tool_calls' in response;
   const [isTransfer, setIsTransfer] = useState<boolean>(false);
   const [isSwap, setIsSwap] = useState<boolean>(false);
   const [isAI, setIsAI] = useState<boolean>(false);
@@ -70,8 +64,16 @@ const ActionConfirmationPopUp = ({
           setIsTransfer(true);
           return;
         }
-      } else {
-        alert("Unknown Function");
+      }
+      if(args.function === "swap_tokens"){
+        console.log("Tx Data");
+        console.log(txData);
+        if(txData.tokenToBuy, txData.tokenToSell, txData.specifiedAmount){
+          setIsSwap(true);
+        }
+      }
+      else{
+        alert("Unknown Function")
       }
     } catch (error) {
       console.log(error);
@@ -109,11 +111,11 @@ const ActionConfirmationPopUp = ({
   };
 
   const handleAcceptAction = () => {
+    console.log("Handle Accept")
     setAcceptAction(true);
     let args = processArguments(response.tool_calls[0]);
     setProcessedArguments(args);
-    setIsOpen(false);
-  };
+  }
   //receiverName, receiverWalletAddress, transferToken, transferAmount
 
   return (
@@ -196,8 +198,8 @@ const ActionConfirmationPopUp = ({
                 <h1 className="text-xl">Reject</h1>
               </RedButton>
               <div className="border border-[#2ed3b7] rounded-xl">
-                <Button onClick={handleAcceptAction}>
-                  <h1 className="text-xl">Accept</h1>
+                <Button onClick={isExecuting ? () => {} : handleAcceptAction}>
+                  <h1 className="text-xl">{isExecuting? "Loading":"Accept"}</h1>
                 </Button>
               </div>
             </div>
